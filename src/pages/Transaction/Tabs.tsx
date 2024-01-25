@@ -25,10 +25,10 @@ function getTabValues(transaction: any): TabValue[] {
     case "user_transaction":
       return [
         "userTxnOverview",
-        "balanceChange",
-        "events",
-        "payload",
-        "changes",
+        // "balanceChange",
+        // "events",
+        // "payload",
+        // "changes",
       ];
     default:
       return ["unknown"];

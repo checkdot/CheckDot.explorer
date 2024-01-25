@@ -18,7 +18,7 @@ export default function NodeCounts({
   validatorGeoMetric,
   isSkeletonLoading,
 }: NodeCountsProps) {
-  const numberOfActiveValidators = 125;
+  const numberOfActiveValidators = validatorGeoMetric.nodeCount;
 
   return !isSkeletonLoading ? (
     <MetricSection>

@@ -8,7 +8,7 @@ import {LearnBanner} from "./LearnBanner";
 export default function LandingPage() {
   return (
     <Box>
-      <LearnBanner />
+      {/* <LearnBanner /> */}
       <Typography variant="h3" component="h3" marginBottom={4}>
         CheckDot Explorer
       </Typography>

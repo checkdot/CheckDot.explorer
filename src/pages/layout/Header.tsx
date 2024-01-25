@@ -116,11 +116,11 @@ export default function Header() {
               {theme.palette.mode === "light" ? <IconLight /> : <IconDark />}
             </Button>
             <NavMobile />
-            {!isOnMobile && (
+            {/* {!isOnMobile && (
               <Box sx={{marginLeft: "1rem"}}>
                 <ConnectButton />
               </Box>
-            )}
+            )} */}
           </Toolbar>
         </Container>
       </MuiAppBar>

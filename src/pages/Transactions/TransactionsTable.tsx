@@ -23,18 +23,12 @@ function SequenceNumberCell(transaction: any) {
   );
 }
 
-function TransactionVersionStatusCell({transaction}: any) {
+function TransactionHashCell({transaction}: any) {
+  let hash = transaction.hash;
+
   return (
-    <GeneralTableCell sx={{textAlign: "left"}}>
-      <Stack direction="row" spacing={0.5}>
-        <Link
-          to={`/txn/${"version" in transaction && transaction.version}`}
-          color="primary"
-          underline="none"
-        >
-          {"version" in transaction && transaction.version}
-        </Link>
-      </Stack>
+    <GeneralTableCell>
+      {hash && <HashButton hash={hash} type={HashType.TRANSACTION} />}
     </GeneralTableCell>
   );
 }
@@ -120,7 +114,7 @@ function TransactionAmountGasCell({transaction}: any) {
 
 const TransactionCells = Object.freeze({
   sequenceNum: SequenceNumberCell,
-  versionStatus: TransactionVersionStatusCell,
+  hash: TransactionHashCell,
   type: TransactionTypeCell,
   timestamp: TransactionTimestampCell,
   sender: TransactionSenderCell,
@@ -132,7 +126,7 @@ const TransactionCells = Object.freeze({
 type TransactionColumn = keyof typeof TransactionCells;
 
 const DEFAULT_COLUMNS: TransactionColumn[] = [
-  "versionStatus",
+  "hash",
   "type",
   "timestamp",
   "sender",
@@ -178,6 +172,7 @@ function UserTransactionRow({
   const {data: transaction, isError} = {
     data: {
       version,
+      hash: "0x67b4082afa36f67ab5d0a9539a31a40ca8db97a3a2e37e2d4eb2746880fa618b",
       sequence_number: 1,
       sender:
         "0x67b4082afa36f67ab5d0a9539a31a40ca8db97a3a2e37e2d4eb2746880fa618b",
@@ -218,8 +213,8 @@ function TransactionHeaderCell({column}: TransactionHeaderCellProps) {
   switch (column) {
     case "sequenceNum":
       return <GeneralTableHeaderCell header="#" />;
-    case "versionStatus":
-      return <GeneralTableHeaderCell header="Version" />;
+    case "hash":
+      return <GeneralTableHeaderCell header="Hash" />;
     case "type":
       return (
         <GeneralTableHeaderCell

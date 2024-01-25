@@ -30,12 +30,12 @@ export default function MapMetrics({
           isSkeletonLoading={isSkeletonLoading}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      {/* <Grid item xs={12} sm={6}>
         <EpochSection isSkeletonLoading={isSkeletonLoading} />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      </Grid> */}
+      {/* <Grid item xs={12} sm={6}>
         <StakingSection isSkeletonLoading={isSkeletonLoading} />
-      </Grid>
+      </Grid> */}
     </Grid>
   ) : (
     <Stack
@@ -49,8 +49,8 @@ export default function MapMetrics({
         validatorGeoMetric={validatorGeoMetric}
         isSkeletonLoading={isSkeletonLoading}
       />
-      <EpochSection isSkeletonLoading={isSkeletonLoading} />
-      <StakingSection isSkeletonLoading={isSkeletonLoading} />
+      {/* <EpochSection isSkeletonLoading={isSkeletonLoading} /> */}
+      {/* <StakingSection isSkeletonLoading={isSkeletonLoading} /> */}
     </Stack>
   );
 }

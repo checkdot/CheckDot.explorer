@@ -14,9 +14,9 @@ export default function ValidatorsPage() {
       <Typography variant="h3" marginBottom={2}>
         Validators
       </Typography>
-      <CommissionChangeBanner />
+      {/* <CommissionChangeBanner /> */}
       <ValidatorsMap />
-      <ValidatorsPageTabs />
+      {/* <ValidatorsPageTabs /> */}
     </Box>
   );
 }

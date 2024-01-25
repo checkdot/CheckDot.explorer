@@ -59,14 +59,14 @@ export default function OverviewTab({data}: OverviewTabProps) {
     <Box marginBottom={3}>
       <ContentBox>
         <ContentRow
+          title={"Hash:"}
+          value={data.hash}
+          tooltip={getLearnMoreTooltip("block_hash")}
+        />
+        <ContentRow
           title={"Block Height:"}
           value={data.block_height}
           tooltip={getLearnMoreTooltip("block_height")}
-        />
-        <ContentRow
-          title={"Version:"}
-          value={<VersionValue data={data} />}
-          tooltip={getLearnMoreTooltip("version")}
         />
         <ContentRow
           title={"Timestamp:"}

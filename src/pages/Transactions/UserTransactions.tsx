@@ -50,9 +50,9 @@ export default function UserTransactions() {
         <Box sx={{width: "auto", overflowX: "auto"}}>
           <UserTransactionsTable versions={versions} />
         </Box>
-        <Box sx={{display: "flex", justifyContent: "center"}}>
+        {/* <Box sx={{display: "flex", justifyContent: "center"}}>
           <RenderPagination currentPage={currentPage} numPages={NUM_PAGES} />
-        </Box>
+        </Box> */}
       </Stack>
     </>
   );
