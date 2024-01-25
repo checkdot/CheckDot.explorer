@@ -9,7 +9,7 @@ import {StyledLearnMoreTooltip} from "../../../components/StyledTooltip";
 import IntervalBar, {IntervalType} from "../../../components/IntervalBar";
 
 const EPOCH_TOOLTIP_TEXT =
-  "An epoch in the Aptos blockchain is defined as a duration of time, in seconds, during which a number of blocks are voted on by the validators. The Aptos mainnet epoch is set as 7200 seconds (two hours).";
+  "An epoch in the CheckDot blockchain is defined as a duration of time, in seconds, during which a number of blocks are voted on by the validators. The CheckDot mainnet epoch is set as 3600 seconds (one hour).";
 const EPOCH_LEARN_MORE_LINK = "https://checkdot.io";
 
 type EpochProps = {
@@ -22,7 +22,7 @@ export default function Epoch({isSkeletonLoading}: EpochProps) {
 
   const curEpoch = 5648;
   const lastEpochTime = '1706124685768210';
-  const epochInterval = '7200000000';
+  const epochInterval = '3600000000';
 
   useEffect(() => {
     if (lastEpochTime !== undefined && epochInterval !== undefined) {

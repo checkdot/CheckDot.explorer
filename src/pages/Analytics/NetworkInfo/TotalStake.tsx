@@ -4,7 +4,7 @@ import MetricCard from "./MetricCard";
 export default function TotalStake() {
   return (
     <MetricCard
-      data={"907,597,246"}
+      data={"0 CDT"}
       label="Actively Staked"
       tooltip="Actively Staked"
     />

@@ -11,10 +11,10 @@ import {useGlobalState} from "../../global-config/GlobalConfig";
 
 const TAB_VALUES_FULL: TabValue[] = [
   "transactions",
-  "coins",
-  "tokens",
-  "resources",
-  "modules",
+  // "coins",
+  // "tokens",
+  // "resources",
+  // "modules",
   "info",
 ];
 

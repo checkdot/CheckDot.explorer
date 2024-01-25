@@ -29,7 +29,7 @@ export default function AmountTextField({
         notched
         value={amount}
         onChange={onAmountChange}
-        endAdornment={<InputAdornment position="end">APT</InputAdornment>}
+        endAdornment={<InputAdornment position="end">CDT</InputAdornment>}
         placeholder={balance ? `Your balance: ${balance}` : ""}
       />
       {warnMessage && <FormHelperText>{warnMessage}</FormHelperText>}

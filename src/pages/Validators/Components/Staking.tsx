@@ -6,7 +6,7 @@ import {Skeleton, Stack} from "@mui/material";
 import {StyledLearnMoreTooltip} from "../../../components/StyledTooltip";
 
 export const REWARDS_TOOLTIP_TEXT =
-  "Represents the Annual Percentage Rate (APR) that accrue on staked APT. Rewards are paid out by the network after each Epoch. APR is subject to change based on validator performance or in accordance with network specifications. There is no guarantee that the current APR will continue to apply in future periods.";
+  "Represents the Annual Percentage Rate (APR) that accrue on staked CDT. Rewards are paid out by the network after each Epoch. APR is subject to change based on validator performance or in accordance with network specifications. There is no guarantee that the current APR will continue to apply in future periods.";
 export const REWARDS_LEARN_MORE_LINK = "https://checkdot.io";
 
 type StakingProps = {
@@ -21,7 +21,7 @@ export default function Staking({isSkeletonLoading}: StakingProps) {
     <MetricSection>
       <Stack direction="row" spacing={1} alignItems="center">
         <Subtitle>{totalVotingPower ? totalVotingPower : "-"}</Subtitle>
-        <Body color="inherit">APT Staked</Body>
+        <Body color="inherit">CDT Staked</Body>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
         <Body>{`${rewardsRateYearly}% APR Reward`}</Body>{" "}

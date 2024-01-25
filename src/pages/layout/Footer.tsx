@@ -16,17 +16,17 @@ import LogoIconLight from "../../assets/svg/cdt_logo_icon_light.svg?react";
 import {Link} from "../../routing";
 
 const socialLinks = [
-  {title: "Git", url: "https://github.com/aptos-labs", icon: GithubLogo},
+  {title: "Git", url: "https://github.com/checkdot", icon: GithubLogo},
   {
     title: "Discord",
-    url: "https://discord.com/invite/aptoslabs",
+    url: "https://discord.com/invite/checkdot",
     icon: DiscordLogo,
   },
-  {title: "Twitter", url: "https://twitter.com/aptoslabs/", icon: TwitterLogo},
-  {title: "Medium", url: "https://aptoslabs.medium.com/", icon: MediumLogo},
+  {title: "Twitter", url: "https://twitter.com/Checkdot_proto", icon: TwitterLogo},
+  {title: "Medium", url: "https://checkdot.medium.com", icon: MediumLogo},
   {
     title: "LinkedIn",
-    url: "https://www.linkedin.com/company/aptoslabs/",
+    url: "https://www.linkedin.com/company/checkdot/",
     icon: LinkedInLogo,
   },
 ];
@@ -60,9 +60,9 @@ export default function Footer() {
           >
             <Link
               color="inherit"
-              to="https://aptoslabs.com/"
+              to="https://checkdot.io/"
               target="_blank"
-              title="Aptos Labs"
+              title="CheckDot"
               sx={{width: "8rem", mr: {md: 2}}}
             >
               {isDark ? <LogoIconDark /> : <LogoIconLight />}
@@ -90,7 +90,7 @@ export default function Footer() {
               >
                 <Link
                   color="inherit"
-                  to="https://aptoslabs.com/privacy"
+                  to="https://checkdot.io/CheckDot-Privacy-Policy-Document.pdf"
                   target="_blank"
                   sx={{
                     fontSize: "0.8rem",
@@ -98,17 +98,6 @@ export default function Footer() {
                   }}
                 >
                   Privacy
-                </Link>
-                <Link
-                  color="inherit"
-                  to="https://aptoslabs.com/terms"
-                  target="_blank"
-                  sx={{
-                    fontSize: "0.8rem",
-                    fontFamily: "apparat, Geneva, Tahoma, Verdana, sans-serif",
-                  }}
-                >
-                  Terms
                 </Link>
               </Stack>
             </Grid>

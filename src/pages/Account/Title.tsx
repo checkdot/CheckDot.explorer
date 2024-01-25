@@ -12,7 +12,7 @@ export default function AccountTitle({address}: AccountTitleProps) {
       <Typography variant="h3">Account</Typography>
       <Stack direction="row" spacing={1}>
         <TitleHashButton hash={address} type={HashType.ACCOUNT} />
-        <TitleHashButton hash={address} type={HashType.NAME} />
+        {/* <TitleHashButton hash={address} type={HashType.NAME} /> */}
       </Stack>
     </Stack>
   );

@@ -6,6 +6,7 @@ import TPS from "./TPS";
 import ActiveValidators from "./ActiveValidators";
 import TotalTransactions from "./TotalTransactions";
 import {Link} from "../../../routing";
+import MaxSupply from "./MaxSupply";
 
 type CardStyle = "default" | "outline";
 
@@ -59,7 +60,7 @@ export default function NetworkInfo({isOnHomePage}: NetworkInfoProps) {
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
           <LinkableContainer linkToAnalyticsPage={onHomePage}>
-            <TPS />
+            <MaxSupply />
           </LinkableContainer>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>

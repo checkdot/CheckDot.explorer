@@ -32,8 +32,8 @@ export default function DailyGasConsumptionChart({
         fill
         tooltipsLabelFunc={(context: any) => {
           const priceInteger = Math.round(context.parsed.y).toString();
-          const priceInAPT = priceInteger;
-          return `${priceInAPT} APT`;
+          const priceInCDT = priceInteger;
+          return `${priceInCDT} CDT`;
         }}
       />
     </Card>
