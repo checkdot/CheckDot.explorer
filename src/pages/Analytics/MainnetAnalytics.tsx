@@ -5,7 +5,7 @@ import ChartRangeDaysSelect, {
 } from "./Components/ChartRangeDaysSelect";
 import DailyActiveUserChart from "./Charts/DailyActiveUserChart";
 import DailyAvgGasUnitPriceChart from "./Charts/DailyAvgGasUnitPriceChart";
-import DailyDeployedContractsChart from "./Charts/DailyDeployedContractsChart";
+import DailyDeployedScriptsChart from "./Charts/DailyDeployedScriptsChart";
 import DailyPeakTPSChart from "./Charts/DailyPeakTPSChart";
 import DailyNewAccountsCreatedChart from "./Charts/DailyNewAccountsCreatedChart";
 import DailyUserTransactionsChart from "./Charts/DailyUserTransactionsChart";
@@ -45,9 +45,9 @@ export default function MainnetAnalytics() {
         return { gas_cost: 1, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
       })
     ],
-    daily_deployed_contracts: [
+    daily_deployed_scripts: [
       ... [...Array(30).keys()].reverse().map(x => {
-        return { daily_contract_deployed: 0, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
+        return { daily_scripts_deployed: 0, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
       })
     ],
     daily_new_accounts_created: [
@@ -62,7 +62,7 @@ export default function MainnetAnalytics() {
     ],
     mau_signers: [
       ... [...Array(30).keys()].reverse().map(x => {
-        return { mau_signer_30: 0, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
+        return { mau_signer_30: 0, date: moment().subtract(x, 'months').format("YYYY-MM-DD") };
       })
     ],
   };
@@ -102,8 +102,8 @@ export default function MainnetAnalytics() {
         />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
-        <DailyDeployedContractsChart
-          data={data.daily_deployed_contracts}
+        <DailyDeployedScriptsChart
+          data={data.daily_deployed_scripts}
           days={days}
         />
       </Grid>
