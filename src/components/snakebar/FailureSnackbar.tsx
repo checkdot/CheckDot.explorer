@@ -29,7 +29,7 @@ export default function FailureSnackbar({
       >
         <Typography variant="inherit">
           Transaction {""}
-          <Link to={`/txn/${hash}`} color="inherit" target="_blank">
+          <Link to={`/tx/${hash}`} color="inherit" target="_blank">
             {hash}
           </Link>{" "}
           failed{" "}

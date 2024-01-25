@@ -11,11 +11,11 @@ function VersionValue({data}: {data: any}) {
   const {first_version, last_version} = data;
   return (
     <>
-      <Link to={`/txn/${first_version}`} underline="none">
+      <Link to={`/tx/${first_version}`} underline="none">
         {first_version}
       </Link>
       {" - "}
-      <Link to={`/txn/${last_version}`} underline="none">
+      <Link to={`/tx/${last_version}`} underline="none">
         {last_version}
       </Link>
     </>

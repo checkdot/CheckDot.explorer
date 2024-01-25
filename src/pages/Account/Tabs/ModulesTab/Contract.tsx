@@ -1024,7 +1024,7 @@ function RunContractForm({module, fn}: {module: any; fn: any}) {
                       variant="outlined"
                       onClick={() =>
                         window.open(
-                          `/txn/${"transactionResponse.transactionHash"}`,
+                          `/tx/${"transactionResponse.transactionHash"}`,
                           "_blank",
                         )
                       }

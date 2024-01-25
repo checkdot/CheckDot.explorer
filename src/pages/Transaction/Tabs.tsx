@@ -115,7 +115,7 @@ export default function TransactionTabs({
     tab === undefined ? getTabValues(transaction)[0] : (tab as TabValue);
 
   const handleChange = (event: React.SyntheticEvent, newValue: TabValue) => {
-    navigate(`/txn/${txnHashOrVersion}/${newValue}`, {replace: true});
+    navigate(`/tx/${txnHashOrVersion}/${newValue}`, {replace: true});
   };
 
   return (

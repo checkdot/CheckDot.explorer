@@ -35,7 +35,7 @@ function getHashLinkStr(hash: string, type: HashType): string {
     case HashType.ACCOUNT:
       return `/account/${hash}`;
     case HashType.TRANSACTION:
-      return `/txn/${hash}`;
+      return `/tx/${hash}`;
     case HashType.OTHERS:
       return "";
     default:

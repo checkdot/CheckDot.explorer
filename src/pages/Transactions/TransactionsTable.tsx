@@ -144,7 +144,7 @@ function TransactionRow({transaction, columns}: TransactionRowProps) {
   const navigate = useNavigate();
 
   const rowClick = () => {
-    navigate(`/txn/${"version" in transaction && transaction.version}`);
+    navigate(`/tx/${"version" in transaction && transaction.version}`);
   };
 
   return (
@@ -192,7 +192,7 @@ function UserTransactionRow({
   }
 
   const rowClick = () => {
-    navigate(`/txn/${version}`);
+    navigate(`/tx/${version}`);
   };
 
   return (

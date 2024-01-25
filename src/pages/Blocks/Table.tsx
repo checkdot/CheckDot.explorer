@@ -55,7 +55,7 @@ function BlockHashCell({block}: BlockCellProps) {
 function FirstVersionCell({block}: BlockCellProps) {
   return (
     <GeneralTableCell sx={{textAlign: "right"}}>
-      <Link to={`/txn/${block.first_version}`} target="_blank" underline="none">
+      <Link to={`/tx/${block.first_version}`} target="_blank" underline="none">
         {block.first_version}
       </Link>
     </GeneralTableCell>
@@ -65,7 +65,7 @@ function FirstVersionCell({block}: BlockCellProps) {
 function LastVersionCell({block}: BlockCellProps) {
   return (
     <GeneralTableCell sx={{textAlign: "right"}}>
-      <Link to={`/txn/${block.last_version}`} target="_blank" underline="none">
+      <Link to={`/tx/${block.last_version}`} target="_blank" underline="none">
         {block.last_version}
       </Link>
     </GeneralTableCell>

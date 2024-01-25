@@ -21,7 +21,7 @@ export default function ExplorerRoutes() {
         <Route path="/validators" element={<ValidatorsPage />}>
           <Route path=":tab" element={<ValidatorsPage />} />
         </Route>
-        <Route path="/txn">
+        <Route path="/tx">
           <Route path=":txnHashOrVersion" element={<TransactionPage />} />
           <Route path=":txnHashOrVersion/:tab" element={<TransactionPage />} />
         </Route>

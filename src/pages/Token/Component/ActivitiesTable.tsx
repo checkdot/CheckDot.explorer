@@ -16,7 +16,7 @@ function TransactionVersionCell({activity}: ActivityCellProps) {
   return (
     <GeneralTableCell sx={{textAlign: "left"}}>
       <Link
-        to={`/txn/${
+        to={`/tx/${
           "transaction_version" in activity && activity.transaction_version
         }`}
         color="primary"
