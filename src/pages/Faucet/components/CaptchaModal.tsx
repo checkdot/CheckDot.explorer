@@ -25,8 +25,8 @@ export default function CaptchaModal({
     if (open) {
       setAnswer("");
       setCaptcha({
-        first: Math.floor(Math.random() * 90) + 10,
-        second: Math.floor(Math.random() * 90) + 10,
+        first: Math.floor(Math.random() * 20),
+        second: Math.floor(Math.random() * 20),
       });
     }
   }, [ref, open]);
@@ -39,7 +39,7 @@ export default function CaptchaModal({
       if (context) {
         context.fillStyle =
           theme.palette.mode === "dark" ? grey[700] : grey["50"];
-        context.fillRect(0, 0, 240, 100);
+        context.fillRect(0, 0, 200, 100);
 
         context.font = "50px 'Give You Glory'";
         context.fillStyle =
@@ -51,9 +51,9 @@ export default function CaptchaModal({
         context.beginPath();
         const startX = Math.random() * 100;
         const endX =
-          startX >= 50 ? Math.random() * 50 : 120 - Math.random() * 50;
+          startX >= 50 ? Math.random() * 50 : 100 - Math.random() * 50;
         context.moveTo(10, startX);
-        context.lineTo(230, endX);
+        context.lineTo(190, endX);
         context.stroke();
 
         const startY = Math.random() * 200;
@@ -80,15 +80,15 @@ export default function CaptchaModal({
 
   const onRefresh = () => {
     setCaptcha({
-      first: Math.floor(Math.random() * 90) + 10,
-      second: Math.floor(Math.random() * 90) + 10,
+      first: Math.floor(Math.random() * 20),
+      second: Math.floor(Math.random() * 20),
     });
   };
 
   return (
     <StyledDialog open={open} handleDialogClose={handleDialogClose}>
       <Box display={"flex"} alignItems={"center"}>
-        <canvas ref={ref} width={240} height={100} />
+        <canvas ref={ref} width={200} height={100} />
         <Typography variant="h5" padding={"0 16px"}>
           =
         </Typography>
@@ -104,7 +104,11 @@ export default function CaptchaModal({
         alignItems={"center"}
         marginTop={3}
       >
-        <Button color="secondary" onClick={onRefresh} sx={{minWidth: "fit-content"}}>
+        <Button
+          color="secondary"
+          onClick={onRefresh}
+          sx={{minWidth: "fit-content"}}
+        >
           <RestartAlt />
         </Button>
         <Button
