@@ -65,6 +65,7 @@ export default function Nav() {
         label="Validators"
       />
       <NavButton to="/blocks" title="View Latest Blocks" label="Blocks" />
+      <NavButton to="/faucet" title="Faucet" label="Faucet" />
     </Box>
   );
 }

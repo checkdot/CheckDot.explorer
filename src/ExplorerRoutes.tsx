@@ -11,6 +11,7 @@ import TransactionsPage from "./pages/Transactions/Index";
 import BlocksPage from "./pages/Blocks/Index";
 import ValidatorsPage from "./pages/Validators/Index";
 import AnalyticsPage from "./pages/Analytics/Index";
+import FaucetPage from "./pages/Faucet/Index";
 
 export default function ExplorerRoutes() {
   return (
@@ -52,6 +53,7 @@ export default function ExplorerRoutes() {
           />
         </Route>
         <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/faucet" element={<FaucetPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </ExplorerLayout>
