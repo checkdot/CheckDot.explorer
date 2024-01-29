@@ -1,8 +1,17 @@
+export type NetworkKey = 'mainnet' | 'testnet' | 'devnet' | 'local';
+
 export const networks = {
   mainnet: "MAINNET",
   testnet: "TESTNET",
   devnet: "DEVNET",
   local: "LOCALNET",
+};
+
+export const networksURLS = {
+  mainnet: "http://localhost:8545",
+  testnet: "http://localhost:8545",
+  devnet: "http://localhost:8545",
+  local: "http://localhost:8545",
 };
 
 export type NetworkName = keyof typeof networks;

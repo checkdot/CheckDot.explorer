@@ -20,13 +20,8 @@ export default function InfoTab({accountData}: InfoTabProps) {
       <ContentBox>
         <ContentRow
           title={"Sequence Number:"}
-          value={accountData.sequence_number}
+          value={accountData.nonce}
           tooltip={getLearnMoreTooltip("sequence_number")}
-        />
-        <ContentRow
-          title={"Authentication Key:"}
-          value={accountData.authentication_key}
-          tooltip={getLearnMoreTooltip("authentication_key")}
         />
       </ContentBox>
     </Box>

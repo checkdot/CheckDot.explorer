@@ -5,9 +5,10 @@ import {grey} from "../../themes/colors/colorPalette";
 interface TableRowProps {
   children: React.ReactNode;
   onClick?: () => void;
+  style?: any;
 }
 
-export default function GeneralTableRow({children, onClick}: TableRowProps) {
+export default function GeneralTableRow({children, onClick,style}: TableRowProps) {
   const theme = useTheme();
   const clickDisabled = !onClick;
 
@@ -36,6 +37,7 @@ export default function GeneralTableRow({children, onClick}: TableRowProps) {
               transform: "translate(0,0.1rem)",
             },
       }}
+      style={style}
     >
       {children}
     </TableRow>

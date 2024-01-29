@@ -8,12 +8,14 @@ import GeneralTableRow from "../../components/Table/GeneralTableRow";
 import GeneralTableHeaderCell from "../../components/Table/GeneralTableHeaderCell";
 import HashButton, {HashType} from "../../components/HashButton";
 import {TableTransactionType} from "../../components/TransactionType";
-import {getTableFormattedTimestamp} from "../utils";
+import {getTableFormattedTimestamp, truncateAddress} from "../utils";
 import TransactionTypeTooltip from "./Components/TransactionTypeTooltip";
 import GeneralTableCell from "../../components/Table/GeneralTableCell";
 import GeneralTableBody from "../../components/Table/GeneralTableBody";
 import {grey} from "../../themes/colors/colorPalette";
 import {Link, useNavigate} from "../../routing";
+import { ethers } from "ethers";
+import { CodeLineBox } from "../../components/CodeLineBox";
 
 function SequenceNumberCell(transaction: any) {
   return (
@@ -25,10 +27,9 @@ function SequenceNumberCell(transaction: any) {
 
 function TransactionHashCell({transaction}: any) {
   let hash = transaction.hash;
-
   return (
     <GeneralTableCell>
-      {hash && <HashButton hash={hash} type={HashType.TRANSACTION} />}
+      <CodeLineBox>{truncateAddress(hash)}</CodeLineBox>
     </GeneralTableCell>
   );
 }
@@ -84,14 +85,16 @@ function TransactionFunctionCell({transaction}: any) {
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",
       }}
-    ></GeneralTableCell>
+    >
+    Transfer
+    </GeneralTableCell>
   );
 }
 
 function TransactionAmount({transaction}: any) {
   const amount = transaction.amount;
 
-  return <Box>{amount}</Box>;
+  return <Box>{`${amount} CDT`}</Box>;
 }
 
 function TransactionAmountGasCell({transaction}: any) {
@@ -103,7 +106,7 @@ function TransactionAmountGasCell({transaction}: any) {
           {"gas_used" in transaction && "gas_unit_price" in transaction ? (
             <>
               <>Gas </>
-              1,233.000 CDT
+              { transaction.gas_used ?? 0 } CDT
             </>
           ) : null}
         </Box>
@@ -144,7 +147,7 @@ function TransactionRow({transaction, columns}: TransactionRowProps) {
   const navigate = useNavigate();
 
   const rowClick = () => {
-    navigate(`/tx/${"version" in transaction && transaction.version}`);
+    navigate(`/tx/${transaction.hash}`);
   };
 
   return (
@@ -158,48 +161,25 @@ function TransactionRow({transaction, columns}: TransactionRowProps) {
 }
 
 type UserTransactionRowProps = {
-  version: number;
+  tx: any;
   columns: TransactionColumn[];
   address?: string;
 };
 
 function UserTransactionRow({
-  version,
+  tx,
   columns,
   address,
 }: UserTransactionRowProps) {
   const navigate = useNavigate();
-  const {data: transaction, isError} = {
-    data: {
-      version,
-      hash: "0x67b4082afa36f67ab5d0a9539a31a40ca8db97a3a2e37e2d4eb2746880fa618b",
-      sequence_number: 1,
-      sender:
-        "0x67b4082afa36f67ab5d0a9539a31a40ca8db97a3a2e37e2d4eb2746880fa618b",
-      receiver:
-        "0x5ae6789dd2fec1a9ec9cccfb3acaf12e93d432f0a3a42c92fe1a9d490b7bbc06",
-      type: "user_transaction",
-      amount: 0,
-      gas_used: 111111111111,
-      gas_unit_price: 11111,
-      timestamp: 170611865,
-    },
-    isError: false,
-  };
-
-  if (!transaction || isError) {
-    return null;
-  }
-
   const rowClick = () => {
-    navigate(`/tx/${version}`);
+    navigate(`/tx/${tx.hash}`);
   };
-
   return (
-    <GeneralTableRow onClick={rowClick}>
+    <GeneralTableRow onClick={rowClick} style={{ backgroundColor: tx.status == 1 ? undefined : (tx.status == 0 ? '#472f0387' : '#961f1f42') }}>
       {columns.map((column) => {
         const Cell = TransactionCells[column];
-        return <Cell key={column} transaction={transaction} />;
+        return <Cell key={column} transaction={tx} />;
       })}
     </GeneralTableRow>
   );
@@ -273,13 +253,13 @@ export default function TransactionsTable({
 }
 
 type UserTransactionsTableProps = {
-  versions: number[];
+  transactions: any[];
   columns?: TransactionColumn[];
   address?: string;
 };
 
 export function UserTransactionsTable({
-  versions,
+  transactions,
   columns = DEFAULT_COLUMNS,
   address,
 }: UserTransactionsTableProps) {
@@ -293,11 +273,11 @@ export function UserTransactionsTable({
         </TableRow>
       </TableHead>
       <GeneralTableBody>
-        {versions.map((version, i) => {
+        {transactions.map((tx, i) => {
           return (
             <UserTransactionRow
-              key={`${i}-${version}`}
-              version={version}
+              key={`${i}-${tx.hash}`}
+              tx={tx}
               columns={columns}
               address={address}
             />

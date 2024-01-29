@@ -26,21 +26,19 @@ export default function TransactionFunction({
     return null;
   }
 
+  if (!("type" in transaction.payload)) {
+    return null;
+  }
+
   if (transaction.payload.type === "script_payload") {
     return <ScriptCodeLine sx={[...(Array.isArray(sx) ? sx : [sx])]} />;
   }
 
-  if (!("function" in transaction.payload)) {
-    return null;
-  }
-
-  const functionName = transaction.payload.function;
+  const functionName = transaction.payload.type;
 
   return (
     <CodeLineBox clickable sx={[...(Array.isArray(sx) ? sx : [sx])]}>
-      <Link to={`/account`} underline="none" style={{color: "inherit"}}>
-        {functionName}
-      </Link>
+      {functionName}
     </CodeLineBox>
   );
 }

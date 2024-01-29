@@ -28,6 +28,7 @@ export enum HashType {
   ACCOUNT = "account",
   TRANSACTION = "transaction",
   OTHERS = "others",
+  BLOCK = 'block'
 }
 
 function getHashLinkStr(hash: string, type: HashType): string {
@@ -36,6 +37,8 @@ function getHashLinkStr(hash: string, type: HashType): string {
       return `/account/${hash}`;
     case HashType.TRANSACTION:
       return `/tx/${hash}`;
+    case HashType.BLOCK:
+      return ``;
     case HashType.OTHERS:
       return "";
     default:
@@ -53,6 +56,7 @@ function HashLink(hash: string, type: HashType): JSX.Element {
         </Link>
       );
     case HashType.OTHERS:
+    case HashType.BLOCK:
       return <>{hash}</>;
     default:
       return assertNever(type);
@@ -73,7 +77,17 @@ export default function HashButton({
   isValidator = false,
   ...props
 }: HashButtonProps) {
-  if (type === HashType.ACCOUNT) {
+  if (type === HashType.BLOCK) {
+    return (
+      <BlockHashButtonInner
+        hash={hash}
+        type={type}
+        size={size}
+        isValidator={isValidator}
+        {...props}
+      />
+    )
+  } else if (type === HashType.ACCOUNT) {
     return (
       <AccountHashButtonInner
         hash={hash}
@@ -161,6 +175,81 @@ function AccountHashButtonInner({
           />
         </Tooltip>
       </Link>
+    </Stack>
+  );
+}
+
+interface BlockHashButtonInnerProps extends BoxProps {
+  hash: string;
+  type: HashType;
+  size?: "small" | "large";
+  isValidator: boolean;
+}
+
+function BlockHashButtonInner({
+  hash,
+  type,
+  size = "small",
+  isValidator,
+}: BlockHashButtonInnerProps) {
+  const truncateHash =
+    size === "large" ? truncateAddressMiddle(hash) : truncateAddress(hash);
+  const [copyTooltipOpen, setCopyTooltipOpen] = useState(false);
+  const theme = useTheme();
+  const copyAddress = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    await navigator.clipboard.writeText(hash);
+    setCopyTooltipOpen(true);
+    setTimeout(() => {
+      setCopyTooltipOpen(false);
+    }, 2000);
+  };
+
+  return (
+    <Stack direction="row" alignItems={"center"} spacing={1}>
+      <Button
+        sx={{
+          backgroundColor: codeBlockColor,
+          "&:hover": {
+            backgroundColor: codeBlockColorClickableOnHover,
+          },
+          color: theme.palette.mode === "dark" ? primary['500'] : primary['700'],
+          padding: "0.15rem 0.35rem 0.15rem 1rem",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          borderRadius: 50,
+          textDecoration: "none",
+        }}
+      >
+        <Tooltip title={hash} enterDelay={500} enterNextDelay={500}>
+          <span>{truncateHash}</span>
+        </Tooltip>
+        <Tooltip title="Copied" open={copyTooltipOpen}>
+          <Button
+            sx={{
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: `${
+                  theme.palette.mode === "dark" ? primary[700] : primary[100]
+                }`,
+                color: `${
+                  theme.palette.mode === "dark" ? primary[100] : primary[600]
+                }`,
+              },
+              padding: "0.25rem 0.5rem 0.25rem 0.5rem",
+              margin: "0 0 0 0.2rem",
+              minWidth: "unset", // remove minimum width
+              borderRadius: 50,
+            }}
+            onClick={copyAddress}
+            endIcon={
+              <ContentCopyIcon sx={{opacity: "0.75", mr: 1}} fontSize="small" />
+            }
+            size="small"
+          />
+        </Tooltip>
+      </Button>
     </Stack>
   );
 }

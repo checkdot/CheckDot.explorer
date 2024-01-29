@@ -27,7 +27,7 @@ function getTabValues(transaction: any): TabValue[] {
         "userTxnOverview",
         // "balanceChange",
         // "events",
-        // "payload",
+        "payload",
         // "changes",
       ];
     default:

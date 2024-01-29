@@ -2,23 +2,19 @@ import * as React from "react";
 import ContentRow from "../../../../components/IndividualPageContent/ContentRow";
 import {getLearnMoreTooltip} from "../../helpers";
 import {Link} from "../../../../routing";
+import { ethers } from "ethers";
 
-export default function TransactionBlockRow({version}: {version: string}) {
-  const data = {
-    block_height: 123,
-  };
+export default function TransactionBlockRow({transaction} : any) {
 
-  if (!data) {
-    return null;
-  }
+  const blockNumber = transaction.blockNumber ? ethers.BigNumber.from(transaction.blockNumber).toString() : undefined;
 
   return (
     <ContentRow
       title="Block:"
       value={
-        <Link to={`/block/${data.block_height}`} underline="none">
-          {data.block_height}
-        </Link>
+        blockNumber !== undefined ? (<Link to={`/block/${blockNumber}`} underline="none">
+          {blockNumber}
+        </Link>) : undefined
       }
       tooltip={getLearnMoreTooltip("block_height")}
     />

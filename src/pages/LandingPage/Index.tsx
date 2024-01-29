@@ -6,15 +6,16 @@ import UserTransactionsPreview from "./UserTransactionsPreview";
 import {LearnBanner} from "./LearnBanner";
 
 export default function LandingPage() {
+
   return (
-    <Box>
-      {/* <LearnBanner /> */}
-      <Typography variant="h3" component="h3" marginBottom={4}>
-        CheckDot Explorer
-      </Typography>
-      <NetworkInfo isOnHomePage />
-      <HeaderSearch />
-      <UserTransactionsPreview />
-    </Box>
+      <Box>
+        {/* <LearnBanner /> */}
+        <Typography variant="h3" component="h3" marginBottom={4}>
+          CheckDot Explorer
+        </Typography>
+        <NetworkInfo isOnHomePage />
+        <HeaderSearch />
+        <UserTransactionsPreview />
+      </Box>
   );
 }

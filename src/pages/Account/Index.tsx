@@ -8,6 +8,10 @@ import PageHeader from "../layout/PageHeader";
 import LoadingModal from "../../components/LoadingModal";
 import Error from "./Error";
 import {useGlobalState} from "../../global-config/GlobalConfig";
+import { useNetworkSelector } from "../../global-config/network-selection";
+import { useQuery } from "@tanstack/react-query";
+import { api_getAccount } from "../../queries/api";
+import { buildAccountFromQueryResult } from "../utils";
 
 const TAB_VALUES_FULL: TabValue[] = [
   "transactions",
@@ -18,8 +22,25 @@ const TAB_VALUES_FULL: TabValue[] = [
   "info",
 ];
 
+const parseResult = (queryResult: any) => {
+  if (queryResult == null || queryResult.result === null) {
+    throw 'Not Found';
+  }
+  return buildAccountFromQueryResult(queryResult.result);
+}
+
 export default function AccountPage() {
   const address = useParams().address ?? "";
+
+  const [selectedNetwork,] = useNetworkSelector();
+
+  const accountQuery: any = address ? useQuery({
+    queryKey: ["api_getAccount", address],
+    queryFn: async () => {
+      const result = await api_getAccount(selectedNetwork, address);
+      return parseResult(result);
+    }
+  }) : { error: true };
 
   const error = false;
   const isLoading = false;
@@ -46,15 +67,17 @@ export default function AccountPage() {
         <AccountTitle address={addressHex} />
       </Grid>
       <Grid item xs={12} md={4} lg={3} marginTop={{md: 0, xs: 2}}>
-        <BalanceCard address={addressHex} />
+        <BalanceCard address={addressHex} balance={accountQuery?.data?.balance ?? 0} />
       </Grid>
       <Grid item xs={12} md={12} lg={12} marginTop={4}>
-        {error ? (
+        { accountQuery?.fetchStatus === 'fetching' && (<LoadingModal open={true} />) }
+        { accountQuery?.error && (
           <Error address={addressHex} error={error} />
-        ) : (
+        )}
+        { accountQuery?.data && (
           <AccountTabs
             address={addressHex}
-            accountData={data}
+            accountData={accountQuery?.data}
             tabValues={tabValues}
           />
         )}

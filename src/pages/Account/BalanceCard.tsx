@@ -4,13 +4,14 @@ import {Card} from "../../components/Card";
 import {grey} from "../../themes/colors/colorPalette";
 import StyledTooltip from "../../components/StyledTooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { ethers } from "ethers";
 
 type BalanceCardProps = {
   address: string;
+  balance: number;
 };
 
-export default function BalanceCard({address}: BalanceCardProps) {
-  const balance = "1";
+export default function BalanceCard({address, balance}: BalanceCardProps) {
 
   return balance ? (
     <Card height="auto">

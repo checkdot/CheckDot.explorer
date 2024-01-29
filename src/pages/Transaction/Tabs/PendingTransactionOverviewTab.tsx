@@ -30,13 +30,6 @@ export default function PendingTransactionOverviewTab({
           tooltip={getLearnMoreTooltip("sequence_number")}
         />
         <ContentRow
-          title="Expiration Timestamp:"
-          value={
-            <TimestampValue timestamp={transaction.expiration_timestamp_secs} />
-          }
-          tooltip={getLearnMoreTooltip("expiration_timestamp_secs")}
-        />
-        <ContentRow
           title="Gas Unit Price:"
           value={transaction.gas_unit_price}
           tooltip={getLearnMoreTooltip("gas_unit_price")}

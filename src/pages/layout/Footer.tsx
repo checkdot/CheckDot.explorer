@@ -14,6 +14,7 @@ import SvgIcon from "@mui/material/SvgIcon";
 import LogoIconDark from "../../assets/svg/cdt_logo_icon_dark.svg?react";
 import LogoIconLight from "../../assets/svg/cdt_logo_icon_light.svg?react";
 import {Link} from "../../routing";
+import { FavoriteOutlined, MonitorHeartOutlined } from "@mui/icons-material";
 
 const socialLinks = [
   {title: "Git", url: "https://github.com/checkdot", icon: GithubLogo},
@@ -97,7 +98,19 @@ export default function Footer() {
                     fontFamily: "apparat, Geneva, Tahoma, Verdana, sans-serif",
                   }}
                 >
-                  Privacy
+                  Privacy Policy
+                </Link>
+                <Link
+                  color="inherit"
+                  to="https://aptoslabs.com"
+                  target="_blank"
+                  sx={{
+                    fontSize: "0.8rem",
+                    fontFamily: "apparat, Geneva, Tahoma, Verdana, sans-serif",
+                  }}
+                  style={{ marginTop: '-6.5px' }}
+                >
+                  Design Based on Aptos Explorer <FavoriteOutlined fontSize="small" style={{ paddingTop: '12px', width: '16px' }} color={'error'}></FavoriteOutlined>
                 </Link>
               </Stack>
             </Grid>

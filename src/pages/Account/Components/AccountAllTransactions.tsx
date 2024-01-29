@@ -40,12 +40,14 @@ function RenderPagination({
 
 type AccountAllTransactionsWithPaginationProps = {
   address: string;
+  accountData: any;
   numPages: number;
   countPerPage: number;
 };
 
 export function AccountAllTransactionsWithPagination({
   address,
+  accountData,
   numPages,
   countPerPage,
 }: AccountAllTransactionsWithPaginationProps) {
@@ -53,15 +55,15 @@ export function AccountAllTransactionsWithPagination({
   const currentPage = parseInt(searchParams.get("page") ?? "1");
   const offset = (currentPage - 1) * countPerPage;
 
-  const versions = [
-    418641549, 418522754, 418390449, 418166769, 418038540, 417912329, 417793307,
-  ];
+  // const versions = [
+  //   418641549, 418522754, 418390449, 418166769, 418038540, 417912329, 417793307,
+  // ];
 
   return (
     <>
       <Stack spacing={2}>
         <Box sx={{width: "auto", overflowX: "auto"}}>
-          <UserTransactionsTable versions={versions} address={address} />
+          <UserTransactionsTable transactions={accountData.transactions} address={address} />
         </Box>
         {numPages > 1 && (
           <Box sx={{display: "flex", justifyContent: "center"}}>
@@ -75,10 +77,12 @@ export function AccountAllTransactionsWithPagination({
 
 type AccountAllTransactionsProps = {
   address: string;
+  accountData: any;
 };
 
 export default function AccountAllTransactions({
   address,
+  accountData
 }: AccountAllTransactionsProps) {
   const txnCount = 3;
   if (txnCount === undefined) {
@@ -91,6 +95,7 @@ export default function AccountAllTransactions({
   return (
     <AccountAllTransactionsWithPagination
       address={address}
+      accountData={accountData}
       numPages={numPages}
       countPerPage={countPerPage}
     />

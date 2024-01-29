@@ -88,12 +88,12 @@ export function TooltipTransactionType({type}: TransactionTypeProps) {
     <Box sx={{display: "flex", alignItems: "flex-start", gap: 2}}>
       {getTypeIcon(type, "inherit")}
       <Stack spacing={0.5}>
-        <TooltipTypography variant="subtitle2" fontWeight={600}>
+        {/* <TooltipTypography variant="subtitle2" fontWeight={600}>
           {getTypeLabel(type)}
         </TooltipTypography>
         <TooltipTypography variant="body2">
           {getTypeTooltip(type)}
-        </TooltipTypography>
+        </TooltipTypography> */}
       </Stack>
     </Box>
   );

@@ -6,21 +6,7 @@ import ContentRow from "../../../components/IndividualPageContent/ContentRow";
 import TimestampValue from "../../../components/IndividualPageContent/ContentValue/TimestampValue";
 import {Link} from "../../../routing";
 import {getLearnMoreTooltip} from "../../Transaction/helpers";
-
-function VersionValue({data}: {data: any}) {
-  const {first_version, last_version} = data;
-  return (
-    <>
-      <Link to={`/tx/${first_version}`} underline="none">
-        {first_version}
-      </Link>
-      {" - "}
-      <Link to={`/tx/${last_version}`} underline="none">
-        {last_version}
-      </Link>
-    </>
-  );
-}
+import { ethers } from "ethers";
 
 function BlockMetadataRows({blockTxn}: {blockTxn: any | undefined}) {
   if (!blockTxn) {
@@ -34,16 +20,6 @@ function BlockMetadataRows({blockTxn}: {blockTxn: any | undefined}) {
         value={<HashButton hash={blockTxn.proposer} type={HashType.ACCOUNT} />}
         tooltip={getLearnMoreTooltip("proposer")}
       />
-      <ContentRow
-        title="Epoch:"
-        value={blockTxn.epoch}
-        tooltip={getLearnMoreTooltip("epoch")}
-      />
-      <ContentRow
-        title="Round:"
-        value={blockTxn.round}
-        tooltip={getLearnMoreTooltip("round")}
-      />
     </>
   );
 }
@@ -53,14 +29,19 @@ type OverviewTabProps = {
 };
 
 export default function OverviewTab({data}: OverviewTabProps) {
-  const blockTxn: any = data.transactions?.[0];
+  const blockTxn: any = data;
 
   return (
     <Box marginBottom={3}>
       <ContentBox>
-        <ContentRow
+        {/* <ContentRow
           title={"Hash:"}
           value={data.hash}
+          tooltip={getLearnMoreTooltip("block_hash")}
+        /> */}
+        <ContentRow
+          title="Hash:"
+          value={<HashButton hash={blockTxn.hash} type={HashType.BLOCK} />}
           tooltip={getLearnMoreTooltip("block_hash")}
         />
         <ContentRow
@@ -68,12 +49,49 @@ export default function OverviewTab({data}: OverviewTabProps) {
           value={data.block_height}
           tooltip={getLearnMoreTooltip("block_height")}
         />
-        <ContentRow
+        {"timestamp" in data && (<ContentRow
           title={"Timestamp:"}
-          value={<TimestampValue timestamp={data.block_timestamp} />}
+          value={<TimestampValue timestamp={data.timestamp} />}
           tooltip={getLearnMoreTooltip("timestamp")}
-        />
+        />)}
         <BlockMetadataRows blockTxn={blockTxn} />
+        <ContentRow
+          title={"Transactions:"}
+          value={`${data.transactions.length} transaction${data.transactions.length > 1 ? 's' : ''} in this block`}
+          tooltip={getLearnMoreTooltip("transactionsCount")}
+        />
+      </ContentBox>
+      <ContentBox>
+        <ContentRow
+          title={"Block Reward:"}
+          value={undefined}
+          tooltip={getLearnMoreTooltip("block_reward")}
+        />
+        <ContentRow
+          title={"Total Difficulty:"}
+          value={data.difficulty}
+          tooltip={getLearnMoreTooltip("block_difficulty")}
+        />
+        <ContentRow
+          title={"Size:"}
+          value={`${data.gasUsed} (${(data.gasUsed * 100 / data.gasLimit).toFixed(2)}%)`}
+          tooltip={getLearnMoreTooltip("block_size")}
+        />
+        <ContentRow
+          title={"Gas Limit:"}
+          value={`${data.gasLimit}`}
+          tooltip={getLearnMoreTooltip("block_size")}
+        />
+        <ContentRow
+          title={"Base Fee Per Gas:"}
+          value={`${ethers.utils.formatEther(ethers.BigNumber.from(data.baseFeePerGas))} CDT (${ethers.utils.formatUnits(ethers.BigNumber.from(data.baseFeePerGas), 'gwei')} Gwei)`}
+          tooltip={getLearnMoreTooltip("block_baseFeePerGas")}
+        />
+        <ContentRow
+          title={"Burnt Fees:"}
+          value={`${ethers.utils.formatEther(ethers.BigNumber.from(data.baseFeePerGas).mul(ethers.BigNumber.from(data.gasUsed)))} CDT`}
+          tooltip={getLearnMoreTooltip("block_burntFees")}
+        />
       </ContentBox>
     </Box>
   );

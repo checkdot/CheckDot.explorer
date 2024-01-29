@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import moment from "moment";
 
 function ensureMillisecondTimestamp(timestamp: string): number {
@@ -118,4 +119,69 @@ export function isValidUrl(url: string): boolean {
   } catch (_) {
     return false;
   }
+}
+
+export const buildTransactionFromQueryResult = (result: any) => {
+  const tx: any = result;
+  const parsedTx = ethers.utils.parseTransaction(tx.raw);
+
+  const status = Number(ethers.BigNumber.from(tx.status).toString());
+
+  return {
+    version: '1',
+    hash: tx.transactionHash,
+    blockNumber: tx.blockNumber,
+    sequence_number: parsedTx.nonce,//tx.transactionIndex ? Number(ethers.BigNumber.from(tx.transactionIndex).toString()) : 0,
+    type: "user_transaction",
+    counterparty: {
+      role: "receiver",
+      address: tx.to,
+    },
+    success: status === 1 ? true : status === 2 ? false : undefined,
+    sender: tx.from,
+    receiver: tx.to,
+    payload: {
+      type: "transfer",
+      data: parsedTx.data
+    },
+    amount: ethers.utils.formatEther(parsedTx.value),
+    expiration_timestamp_secs: 1706106324,
+    timestamp: tx.blockTimestamp ? tx.blockTimestamp * 1000 : undefined,//1706106026491801,
+    gas_used: tx.gasUsed ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed)) : undefined,
+    gas_unit_price: tx.effectiveGasPrice ? ethers.utils.formatEther(ethers.BigNumber.from(tx.effectiveGasPrice)) : undefined,
+    signature: {
+      r: parsedTx.r,
+      s: parsedTx.s,
+      v: parsedTx.v
+    },
+    events: [],
+    status: Number(ethers.BigNumber.from(tx.status).toString())
+  };
+}
+
+export const buildBlockFromQueryResult = (result: any) => {
+  const block: any = result;
+
+  return {
+    hash: block.hash,
+    block_height: Number(ethers.BigNumber.from(block.number).toString()),
+    timestamp: block.timestamp * 1000,
+    proposer: block.miner,
+    difficulty: Number(ethers.BigNumber.from(block.difficulty).toString()),
+    gasUsed: Number(ethers.BigNumber.from(block.gasUsed).toString()),
+    gasLimit: Number(ethers.BigNumber.from(block.gasLimit).toString()),
+    baseFeePerGas: Number(ethers.BigNumber.from(block.baseFeePerGas).toString()),
+    transactions: block.transactions.map((x: any) => buildTransactionFromQueryResult(x)),
+  };
+}
+
+export const buildAccountFromQueryResult = (result: any) => {
+  const account: any = result;
+
+  return {
+    address: account.address,
+    nonce: Number(ethers.BigNumber.from(account.nonce).toString()),
+    balance: ethers.utils.formatEther(ethers.BigNumber.from(account.balance)),
+    transactions: account.transactions.map((x: any) => buildTransactionFromQueryResult(x))
+  };
 }
