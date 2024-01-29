@@ -83,8 +83,13 @@ export default function NavMobile() {
         <MenuItem onClick={() => handleCloseAndNavigate("/blocks")}>
           Blocks
         </MenuItem>
+        <MenuItem onClick={() => handleCloseAndNavigate("/faucet")}>
+          Faucet
+        </MenuItem>
+        <MenuItem onClick={() => handleCloseAndNavigate("/challenges")}>
+          Challenges
+        </MenuItem>
         <Divider />
-        
       </Menu>
     </Box>
   );
