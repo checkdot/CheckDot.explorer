@@ -19,14 +19,16 @@ export default function StyledDialog({
         onClick={handleDialogClose}
         sx={{
           position: "absolute",
-          right: 12,
-          top: 12,
+          right: 4,
+          top: 4,
           color: grey[450],
         }}
       >
         <CloseIcon />
       </IconButton>
-      <Stack sx={{marginX: 4, marginY: 4}}>{children}</Stack>
+      <Stack marginX={[3, 4]} marginY={4}>
+        {children}
+      </Stack>
     </Dialog>
   );
 }

@@ -13,6 +13,7 @@ import {
 import React, {useState} from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import BannerImage from "../assets/Banner.jpg";
+import {primary} from "../themes/colors/colorPalette";
 
 type PillColors =
   | "primary"
@@ -101,7 +102,11 @@ export function Banner({
       <Box sx={[...(Array.isArray(sx) ? sx : [sx])]}>
         {isOnMobile ? (
           <Alert
-            sx={{backgroundImage: `url(${BannerImage})`, borderRadius: 1}}
+            sx={{
+              backgroundImage: `url(${BannerImage})`,
+              borderRadius: 1,
+              backgroundSize: "cover",
+            }}
             icon={false}
             action={
               <Stack
@@ -129,7 +134,12 @@ export function Banner({
           </Alert>
         ) : (
           <Alert
-            sx={{backgroundImage: `url(${BannerImage})`, borderRadius: 1}}
+            sx={{
+              backgroundImage: `url(${BannerImage})`,
+              borderRadius: 1,
+              backgroundSize: "cover",
+              borderLeft: `6px solid ${theme.palette.mode === "dark" ? primary["600"] : primary["700"]}`,
+            }}
             icon={false}
             action={
               <Stack

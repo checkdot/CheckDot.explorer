@@ -1,9 +1,15 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
-import {useTheme} from "@mui/system";
+import {styled, useTheme} from "@mui/system";
 import {useEffect, useRef, useState} from "react";
 import {grey, primary} from "../../../themes/colors/colorPalette";
 import StyledDialog from "../../../components/StyledDialog";
 import {RestartAlt} from "@mui/icons-material";
+
+const StyledCanvas = styled("canvas")`
+  @media (max-width: 480px) {
+    width: 130px;
+  }
+`;
 
 interface CaptchaModalProps {
   open: boolean;
@@ -86,10 +92,10 @@ export default function CaptchaModal({
   };
 
   return (
-    <StyledDialog open={open} handleDialogClose={handleDialogClose}>
+    <StyledDialog open={open} handleDialogClose={handleDialogClose} sx={{}}>
       <Box display={"flex"} alignItems={"center"}>
-        <canvas ref={ref} width={200} height={100} />
-        <Typography variant="h5" padding={"0 16px"}>
+        <StyledCanvas ref={ref} width={200} height={100} />
+        <Typography variant="h5" padding={["0 8px", "0 16px"]}>
           =
         </Typography>
         <TextField

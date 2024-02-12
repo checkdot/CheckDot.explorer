@@ -50,22 +50,26 @@ export function WelcomeBanner() {
 
   const text = (
     <>
-      Here you can claim 10 CDTs once per address.<br/>
+      Here you can claim 10 CDTs once per address.
+      <br />
       Please complete the captcha and provide an address in the required field.
     </>
   );
 
   const children = isOnMobile ? (
-    <Stack direction="column">
-      {text}
-    </Stack>
+    <Stack direction="column">{text}</Stack>
   ) : (
     <>{text}</>
   );
 
   return (
     <>
-      <Banner pillText="FAUCET" pillColor="success" sx={{marginBottom: 2}} action={action}>
+      <Banner
+        pillText="FAUCET"
+        pillColor="success"
+        sx={{marginBottom: 2}}
+        action={action}
+      >
         {children}
       </Banner>
     </>
