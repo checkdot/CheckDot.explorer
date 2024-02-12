@@ -10,7 +10,7 @@ import SvgIcon, {SvgIconProps} from "@mui/material/SvgIcon";
 import {useTheme} from "@mui/material/styles";
 import {Stack} from "@mui/system";
 import React from "react";
-import {NetworkName, networks} from "../../constants";
+import {Network, NetworkName, networks} from "../../constants";
 import {useGlobalState} from "../../global-config/GlobalConfig";
 import {grey} from "../../themes/colors/colorPalette";
 
@@ -49,7 +49,11 @@ function NetworkAndChainId({networkName}: {networkName: string}) {
 }
 
 function NetworkMenuItem({networkName}: {networkName: string}) {
-  const chainIdCached = '1';
+  const chainIds: any = {
+    'devnet': 831,
+    'local': 1
+  };
+  const chainIdCached = chainIds[networkName] !== undefined ? chainIds[networkName] : '1';
 
   return chainIdCached ? (
     <NetworkAndChainIdCached
@@ -139,7 +143,7 @@ export default function NetworkSelect() {
               <Typography variant="body2">Chain ID</Typography>
             </Stack>
           </MenuItem>
-          {Object.keys(networks).map((networkName: string) => (
+          {Object.keys(networks).filter(x => x !== Network.MAINNET && x !== Network.TESTNET).map((networkName: string) => (
             <MenuItem
               key={networkName}
               value={networkName}

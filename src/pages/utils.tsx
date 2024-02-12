@@ -141,14 +141,15 @@ export const buildTransactionFromQueryResult = (result: any) => {
     sender: tx.from,
     receiver: tx.to,
     payload: {
-      type: "transfer",
+      type: tx.type,
       data: parsedTx.data
     },
     amount: ethers.utils.formatEther(parsedTx.value),
     expiration_timestamp_secs: 1706106324,
     timestamp: tx.blockTimestamp ? tx.blockTimestamp * 1000 : undefined,//1706106026491801,
-    gas_used: tx.gasUsed ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed)) : undefined,
+    gas_used: tx.gasUsed ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed).mul(ethers.BigNumber.from(tx.effectiveGasPrice))) : undefined,
     gas_unit_price: tx.effectiveGasPrice ? ethers.utils.formatEther(ethers.BigNumber.from(tx.effectiveGasPrice)) : undefined,
+    gas_fee: tx.effectivePriorityFee ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed).mul(ethers.BigNumber.from(tx.effectivePriorityFee))) : undefined,
     signature: {
       r: parsedTx.r,
       s: parsedTx.s,
@@ -159,7 +160,7 @@ export const buildTransactionFromQueryResult = (result: any) => {
   };
 }
 
-export const buildBlockFromQueryResult = (result: any) => {
+export const buildBlockFromQueryResult = (result: any, ignoreTransactions: boolean = false) => {
   const block: any = result;
 
   return {
@@ -167,11 +168,14 @@ export const buildBlockFromQueryResult = (result: any) => {
     block_height: Number(ethers.BigNumber.from(block.number).toString()),
     timestamp: block.timestamp * 1000,
     proposer: block.miner,
-    difficulty: Number(ethers.BigNumber.from(block.difficulty).toString()),
-    gasUsed: Number(ethers.BigNumber.from(block.gasUsed).toString()),
-    gasLimit: Number(ethers.BigNumber.from(block.gasLimit).toString()),
-    baseFeePerGas: Number(ethers.BigNumber.from(block.baseFeePerGas).toString()),
-    transactions: block.transactions.map((x: any) => buildTransactionFromQueryResult(x)),
+    difficulty: ethers.BigNumber.from(block.difficulty),
+    gasUsed: ethers.BigNumber.from(block.gasUsed),
+    gasLimit: ethers.BigNumber.from(block.gasLimit),
+    baseFeePerGas: ethers.BigNumber.from(block.baseFeePerGas),
+    staticReward: ethers.BigNumber.from(block.staticReward),
+    transactionFees: ethers.BigNumber.from(block.transactionFees),
+    totalSupply: ethers.BigNumber.from(block.totalSupply),
+    transactions: ignoreTransactions ? [] : block.transactions.map((x: any) => buildTransactionFromQueryResult(x)),
   };
 }
 
@@ -182,6 +186,13 @@ export const buildAccountFromQueryResult = (result: any) => {
     address: account.address,
     nonce: Number(ethers.BigNumber.from(account.nonce).toString()),
     balance: ethers.utils.formatEther(ethers.BigNumber.from(account.balance)),
-    transactions: account.transactions.map((x: any) => buildTransactionFromQueryResult(x))
+    transactions: account.transactions.map((x: any) => buildTransactionFromQueryResult(x)),
+    challenges: result.challenges ?? []
   };
 }
+
+export const functionNames: any = {
+  '0x2': "Transfer",
+  '0x1': 'Not supported',
+  '0x0': 'Legacy Transfer'
+};

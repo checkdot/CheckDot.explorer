@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 
 export default function TransactionBlockRow({transaction} : any) {
 
-  const blockNumber = transaction.blockNumber ? ethers.BigNumber.from(transaction.blockNumber).toString() : undefined;
+  const blockNumber = transaction.blockNumber && transaction.success !== undefined ? ethers.BigNumber.from(transaction.blockNumber).toString() : undefined;
 
   return (
     <ContentRow

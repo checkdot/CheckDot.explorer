@@ -9,6 +9,7 @@ import TimestampValue from "../../../components/IndividualPageContent/ContentVal
 import TransactionFunction from "./Components/TransactionFunction";
 import TransactionBlockRow from "./Components/TransactionBlockRow";
 import JsonViewCard from "../../../components/IndividualPageContent/JsonViewCard";
+import { ethers } from "ethers";
 
 function UserTransferOrInteractionRows({transaction}: {transaction: any}) {
   const counterparty = transaction.counterparty;
@@ -98,7 +99,7 @@ export default function UserTransactionOverviewTab({
         <TransactionBlockRow transaction={transaction} />
         <ContentRow
           title="Sequence Number:"
-          value={transaction.sequence_number}
+          value={`${transaction.sequence_number}`}
           tooltip={getLearnMoreTooltip("sequence_number")}
         />
         {transaction.timestamp && (<ContentRow
@@ -108,7 +109,7 @@ export default function UserTransactionOverviewTab({
         />)}
         <ContentRow
           title="Gas Fee:"
-          value={transaction.gas_used ? `${transaction.gas_used} CDT` : undefined}
+          value={transaction.gas_used ? `${transaction.gas_used} CDT (${transaction.gas_used ? (transaction.gas_used - transaction.gas_fee) : ''} Burnt)` : undefined}
           tooltip={getLearnMoreTooltip("gas_fee")}
         />
         <ContentRow

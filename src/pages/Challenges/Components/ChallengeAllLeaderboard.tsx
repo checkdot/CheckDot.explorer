@@ -3,7 +3,10 @@ import Box from "@mui/material/Box";
 import {useSearchParams} from "react-router-dom";
 import {Pagination, Stack} from "@mui/material";
 import EmptyTabContent from "../../../components/IndividualPageContent/EmptyTabContent";
-import LeaderboardTable from "./LeaderBoardTable";
+import LeaderboardTable from "./LeaderboardTable";
+import { useQuery } from "@tanstack/react-query";
+import { useNetworkSelector } from "../../../global-config/network-selection";
+import { api_getChallengesLeaderboard } from "../../../queries/api";
 
 function RenderPagination({
   currentPage,
@@ -51,50 +54,21 @@ export function ChallengeAllLeaderboardWithPagination({
   const currentPage = parseInt(searchParams.get("page") ?? "1");
   const offset = (currentPage - 1) * countPerPage;
 
-  const data = [
-    {
-      rank: 1,
-      user: "0xf24025eff2f5296136da881334d8432171b84ce5e263372d2b395a1c20ad7b2b",
-      completed: 32,
-      totalPoints: 120,
-    },
-    {
-      rank: 2,
-      user: "0xf24025eff2f5296136da881334d8432171b84ce5e263372d2b395a1c20ad7b2b",
-      completed: 32,
-      totalPoints: 120,
-    },
-    {
-      rank: 3,
-      user: "0xf24025eff2f5296136da881334d8432171b84ce5e263372d2b395a1c20ad7b2b",
-      completed: 32,
-      totalPoints: 120,
-    },
-    {
-      rank: 4,
-      user: "0xf24025eff2f5296136da881334d8432171b84ce5e263372d2b395a1c20ad7b2b",
-      completed: 32,
-      totalPoints: 120,
-    },
-    {
-      rank: 5,
-      user: "0xf24025eff2f5296136da881334d8432171b84ce5e263372d2b395a1c20ad7b2b",
-      completed: 32,
-      totalPoints: 120,
-    },
-    {
-      rank: 6,
-      user: "0xf24025eff2f5296136da881334d8432171b84ce5e263372d2b395a1c20ad7b2b",
-      completed: 32,
-      totalPoints: 120,
-    },
-  ];
+  const [network,] = useNetworkSelector();
+
+  const leaderboardQuery = useQuery({
+    queryKey: ['api_getChallengesLeaderboard', currentPage],
+    queryFn: async () => {
+      const responseResult = await api_getChallengesLeaderboard(network, currentPage);
+      return responseResult.result;
+    }
+  });
 
   return (
     <>
       <Stack spacing={2}>
         <Box sx={{width: "auto", overflowX: "auto"}}>
-          <LeaderboardTable data={data} />
+          { leaderboardQuery.data && (<LeaderboardTable data={leaderboardQuery.data} />) }
         </Box>
         {numPages > 1 && (
           <Box sx={{display: "flex", justifyContent: "center"}}>

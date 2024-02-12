@@ -6,11 +6,16 @@ import StyledTooltip from "../../components/StyledTooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 type PointCardProps = {
-  address: string;
+  challenges: any[];
 };
 
-export default function PointCard({address}: PointCardProps) {
-  const point = "1";
+export default function PointCard({challenges}: PointCardProps) {
+  const point = challenges.reduce((acc, c) => {
+    if (c.validated) {
+      acc += c.points;
+    }
+    return acc;
+  }, 0);
 
   return point ? (
     <Card height="auto">

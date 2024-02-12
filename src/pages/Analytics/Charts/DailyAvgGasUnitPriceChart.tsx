@@ -4,6 +4,7 @@ import {getLabels} from "../utils";
 import {ChartRangeDays} from "../Components/ChartRangeDaysSelect";
 import ChartTitle from "../Components/ChartTitle";
 import {Card} from "../../../components/Card";
+import { BigNumber, ethers } from "ethers";
 
 export function getDataset(data: any[], days: number): number[] {
   return data
@@ -34,7 +35,7 @@ export default function DailyAvgGasUnitPriceChart({
         dataset={dataset}
         fill
         tooltipsLabelFunc={(context: any) => {
-          const priceInteger = Math.round(context.parsed.y).toString();
+          const priceInteger = context.parsed.y.toFixed(18);
           const priceInCDT = priceInteger;
           return `${priceInCDT} CDT`;
         }}

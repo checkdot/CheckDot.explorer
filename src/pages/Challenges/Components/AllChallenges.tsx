@@ -39,65 +39,33 @@ function RenderPagination({
 }
 
 type AllChallengesWithPaginationProps = {
+  address: string;
+  accountData: any;
   numPages: number;
   countPerPage: number;
 };
 
 export function AllChallengesWithPagination({
+  address,
+  accountData,
   numPages,
   countPerPage,
 }: AllChallengesWithPaginationProps) {
   const [searchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get("page") ?? "1");
-  const offset = (currentPage - 1) * countPerPage;
-
-  const data = [
-    {
-      image: "",
-      title: "Mint the nft on the testnet",
-      points: 32,
-      validated: true,
-    },
-    {
-      image: "",
-      title: "Mint the nft on the testnet",
-      points: 32,
-    },
-    {
-      image: "",
-      title: "Mint the nft on the testnet",
-      points: 32,
-    },
-    {
-      image: "",
-      title: "Mint the nft on the testnet",
-      points: 32,
-    },
-    {
-      image: "",
-      title: "Visit the homepage",
-      points: 2,
-      validated: true,
-    },
-    {
-      image: "",
-      title: "Deploy the contract",
-      points: 32,
-      validated: true,
-    },
-  ];
+  // const currentPage = parseInt(searchParams.get("page") ?? "1");
+  // const offset = (currentPage - 1) * countPerPage;
 
   return (
     <>
       <Stack spacing={2}>
         <Box sx={{width: "auto", overflowX: "auto"}}>
-          <ChallengesList data={data} />
+          { accountData.challenges && <ChallengesList data={accountData.challenges} /> }
         </Box>
-        {numPages > 1 && (
+        {/* {numPages > 1 && (
           <Box sx={{display: "flex", justifyContent: "center"}}>
             <RenderPagination currentPage={currentPage} numPages={numPages} />
           </Box>
-        )}
+        )} */}
       </Stack>
     </>
   );
@@ -105,9 +73,10 @@ export function AllChallengesWithPagination({
 
 type AllChallengesProps = {
   address: string;
+  accountData: any;
 };
 
-export default function AllChallenges({address}: AllChallengesProps) {
+export default function AllChallenges({address, accountData}: AllChallengesProps) {
   const txnCount = 100;
   if (txnCount === undefined) {
     return <EmptyTabContent />;
@@ -117,6 +86,8 @@ export default function AllChallenges({address}: AllChallengesProps) {
   const numPages = Math.ceil(txnCount / countPerPage);
   return (
     <AllChallengesWithPagination
+      address={address}
+      accountData={accountData}
       numPages={numPages}
       countPerPage={countPerPage}
     />

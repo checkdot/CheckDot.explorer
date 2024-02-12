@@ -10,7 +10,7 @@ export const networks = {
 export const networksURLS = {
   mainnet: "http://localhost:8545",
   testnet: "http://localhost:8545",
-  devnet: "http://localhost:8545",
+  devnet: "https://devnet.checkdot.io",
   local: "http://localhost:8545",
 };
 
@@ -35,7 +35,7 @@ for (const key of Object.keys(networks)) {
   }
 }
 
-export const defaultNetworkName: NetworkName = "mainnet" as const;
+export const defaultNetworkName: NetworkName = "devnet" as const;
 
 if (!(defaultNetworkName in networks)) {
   throw `defaultNetworkName '${defaultNetworkName}' not in Networks!`;

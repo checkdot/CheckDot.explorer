@@ -48,9 +48,9 @@ export default function Nav() {
       }}
     >
       <NavButton
-        to="/transactions"
-        title="View All Transactions"
-        label="Transactions"
+        to="/"
+        title="Home"
+        label="Home"
       />
       {
         <NavButton
@@ -64,9 +64,9 @@ export default function Nav() {
         title="View All Validators"
         label="Validators"
       />
-      <NavButton to="/blocks" title="View Latest Blocks" label="Blocks" />
+      {/* <NavButton to="/blocks" title="View Latest Blocks" label="Blocks" /> */}
       <NavButton to="/faucet" title="Faucet" label="Faucet" />
-      <NavButton to="/challenges" title="Challenges" label="Challenges" />
+      <NavButton to="/challenges" title="Challenges" label="Leaderboard" />
     </Box>
   );
 }

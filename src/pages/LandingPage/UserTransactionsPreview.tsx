@@ -26,11 +26,11 @@ export default function UserTransactionsPreview() {
   return (
     <>
         <Stack spacing={2}>
-          <Typography variant="h5">User Transactions</Typography>
+          <Typography variant="h5">Recent User Transactions</Typography>
           <Box sx={{width: "auto", overflowX: "auto"}}>
             { lastTransactions.data && (<UserTransactionsTable transactions={lastTransactions.data} />)}
           </Box>
-          <Box sx={{display: "flex", justifyContent: "center"}}>
+          {/* <Box sx={{display: "flex", justifyContent: "center"}}>
             <Button
               component={RRD.Link}
               to={augmentTo("/transactions")}
@@ -39,7 +39,7 @@ export default function UserTransactionsPreview() {
             >
               View all Transactions
             </Button>
-          </Box>
+          </Box> */}
         </Stack>
     </>
   );

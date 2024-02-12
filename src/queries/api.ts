@@ -37,6 +37,42 @@ export const api_getAccount = async (selectedNetwork: NetworkKey, address: strin
     );
   }
 
+export const api_getAnalytics = async (selectedNetwork: NetworkKey) => {
+    return request<any>(
+        `${networksURLS[selectedNetwork]}`,
+        "api_getAnalytics",
+        "POST",
+        {"jsonrpc":"2.0","method":"api_getAnalytics","params": [],"id":1}
+    );
+  }
+
+export const api_getAllAnalytics = async (selectedNetwork: NetworkKey) => {
+    return request<any>(
+        `${networksURLS[selectedNetwork]}`,
+        "api_getAllAnalytics",
+        "POST",
+        {"jsonrpc":"2.0","method":"api_getAllAnalytics","params": [],"id":1}
+    );
+  }
+
+export const api_claimFaucet = async (selectedNetwork: NetworkKey, address: string) => {
+    return request<any>(
+        `${networksURLS[selectedNetwork]}`,
+        "api_claimFaucet",
+        "POST",
+        {"jsonrpc":"2.0","method":"api_claimFaucet","params": [address],"id":1}
+    );
+  }
+
+export const api_getChallengesLeaderboard = async (selectedNetwork: NetworkKey, page: number) => {
+  return request<any>(
+      `${networksURLS[selectedNetwork]}`,
+      "api_getChallengesLeaderboard",
+      "POST",
+      {"jsonrpc":"2.0","method":"api_getChallengesLeaderboard","params": [page],"id":1}
+  );
+}
+
 // Functions
 async function requestAsResponse<T>(
     url: string,

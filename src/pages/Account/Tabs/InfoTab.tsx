@@ -20,7 +20,7 @@ export default function InfoTab({accountData}: InfoTabProps) {
       <ContentBox>
         <ContentRow
           title={"Sequence Number:"}
-          value={accountData.nonce}
+          value={`${accountData.nonce}`}
           tooltip={getLearnMoreTooltip("sequence_number")}
         />
       </ContentBox>

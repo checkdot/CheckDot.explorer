@@ -3,6 +3,7 @@ import {Box, Stack, SxProps, Theme} from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import {CodeLineBox} from "../../../../components/CodeLineBox";
 import {Link} from "../../../../routing";
+import { functionNames } from "../../../utils";
 
 function ScriptCodeLine({sx}: {sx?: SxProps<Theme>}): JSX.Element {
   return (
@@ -34,11 +35,11 @@ export default function TransactionFunction({
     return <ScriptCodeLine sx={[...(Array.isArray(sx) ? sx : [sx])]} />;
   }
 
-  const functionName = transaction.payload.type;
+  const functionKey = transaction.payload.type;
 
   return (
     <CodeLineBox clickable sx={[...(Array.isArray(sx) ? sx : [sx])]}>
-      {functionName}
+      {functionNames[functionKey]}
     </CodeLineBox>
   );
 }

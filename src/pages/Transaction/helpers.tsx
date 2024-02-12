@@ -42,11 +42,7 @@ export function getLearnMoreTooltip(txnField: string): JSX.Element | null {
       );
     case "gas_fee":
       return (
-        <LearnMoreTooltip
-          text="Learn more about Gas Price"
-          link="https://checkdot.io"
-          linkToText
-        />
+        <LearnMoreTooltip text="effectiveGasPrice * gasUsed" />
       );
     case "gas_unit_price":
       return <LearnMoreTooltipPlaceholder />;
@@ -110,6 +106,10 @@ export function getLearnMoreTooltip(txnField: string): JSX.Element | null {
           link="https://checkdot.io"
           linkToText
         />
+      );
+    case "block_reward":
+      return (
+        <LearnMoreTooltip text="For each block, the block producer is rewarded with a finite amount of CDT on top of the fees paid for all transactions in the block. (Static Block Reward + Transaction Fees - Burnt Fees)" />
       );
     default:
       return <LearnMoreTooltipPlaceholder />;

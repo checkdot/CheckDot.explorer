@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Box, Stack} from "@mui/material";
+import {Box, Stack, useTheme} from "@mui/material";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -8,7 +8,7 @@ import GeneralTableRow from "../../components/Table/GeneralTableRow";
 import GeneralTableHeaderCell from "../../components/Table/GeneralTableHeaderCell";
 import HashButton, {HashType} from "../../components/HashButton";
 import {TableTransactionType} from "../../components/TransactionType";
-import {getTableFormattedTimestamp, truncateAddress} from "../utils";
+import {functionNames, getTableFormattedTimestamp, truncateAddress} from "../utils";
 import TransactionTypeTooltip from "./Components/TransactionTypeTooltip";
 import GeneralTableCell from "../../components/Table/GeneralTableCell";
 import GeneralTableBody from "../../components/Table/GeneralTableBody";
@@ -16,6 +16,7 @@ import {grey} from "../../themes/colors/colorPalette";
 import {Link, useNavigate} from "../../routing";
 import { ethers } from "ethers";
 import { CodeLineBox } from "../../components/CodeLineBox";
+import { useColorMode } from "../../context";
 
 function SequenceNumberCell(transaction: any) {
   return (
@@ -78,6 +79,7 @@ function TransactionReceiverOrCounterPartyCell({transaction}: any) {
 }
 
 function TransactionFunctionCell({transaction}: any) {
+  const transactionName = functionNames[transaction.payload.type] ?? 'Unknown';
   return (
     <GeneralTableCell
       sx={{
@@ -86,7 +88,7 @@ function TransactionFunctionCell({transaction}: any) {
         textOverflow: "ellipsis",
       }}
     >
-    Transfer
+    {transactionName}
     </GeneralTableCell>
   );
 }
@@ -175,8 +177,16 @@ function UserTransactionRow({
   const rowClick = () => {
     navigate(`/tx/${tx.hash}`);
   };
+  const theme = useTheme();
+
+  let colorsTx = {
+    'success': undefined,
+    'pending': theme.palette.mode === "light" ? '#ffa70687' : '#472f0387',
+    'error': theme.palette.mode === "light" ? '#961f1f42' : '#961f1f42',
+  };
+
   return (
-    <GeneralTableRow onClick={rowClick} style={{ backgroundColor: tx.status == 1 ? undefined : (tx.status == 0 ? '#472f0387' : '#961f1f42') }}>
+    <GeneralTableRow onClick={rowClick} style={{ backgroundColor: tx.status == 1 ? colorsTx['success'] : (tx.status == 0 ? colorsTx['pending'] : colorsTx['error']) }}>
       {columns.map((column) => {
         const Cell = TransactionCells[column];
         return <Cell key={column} transaction={tx} />;

@@ -6,7 +6,7 @@ import ChartTitle from "../Components/ChartTitle";
 import {Card} from "../../../components/Card";
 
 export function getDataset(data: any[], days: number): number[] {
-  return data.slice(-days).map((dailyData) => dailyData.max_tps_15_blocks);
+  return data.slice(-days).map((dailyData) => dailyData.tps);
 }
 
 type DailyPeakTPSChartProps = {
@@ -24,10 +24,12 @@ export default function DailyPeakTPSChart({
   return (
     <Card>
       <ChartTitle
-        label="Peak TPS"
-        tooltip="Daily highest rate of transactions per second, averaged over 15 blocks."
+        label="TPS"
+        tooltip="Daily rate of transactions per second"
       />
-      <LineChart labels={labels} dataset={dataset} />
+      <LineChart labels={labels} dataset={dataset} tooltipsLabelFunc={(context: any) => {
+          return `${context.parsed.y.toFixed(5)} TPS`;
+        }} />
     </Card>
   );
 }

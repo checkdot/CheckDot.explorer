@@ -24,3 +24,7 @@ export function numberFormatter(num: number, digits: number) {
 export function getLabels(data: any, days: number): string[] {
   return data.slice(-days).map((dailyData: any) => dailyData.date.substring(5));
 }
+
+export const numberWithCommas = (x: string) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};

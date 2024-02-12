@@ -26,7 +26,7 @@ export default function CaptchaModal({
       setAnswer("");
       setCaptcha({
         first: Math.floor(Math.random() * 20),
-        second: Math.floor(Math.random() * 20),
+        second: Math.floor(Math.random() * 9),
       });
     }
   }, [ref, open]);

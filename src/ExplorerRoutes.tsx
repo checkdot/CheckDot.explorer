@@ -46,6 +46,19 @@ export default function ExplorerRoutes() {
                 <Route path=":address" element={<AccountPage />} />
               </Route>
 
+              <Route path="/address">
+                <Route
+                  path=":address/modules/:modulesTab/:selectedModuleName"
+                  element={<AccountPage />}
+                />
+                <Route
+                  path=":address/modules/:modulesTab/:selectedModuleName/:selectedFnName"
+                  element={<AccountPage />}
+                />
+                <Route path=":address/:tab" element={<AccountPage />} />
+                <Route path=":address" element={<AccountPage />} />
+              </Route>
+
               <Route path="/blocks" element={<BlocksPage />} />
               <Route path="/block">
                 <Route path=":height" element={<BlockPage />} />

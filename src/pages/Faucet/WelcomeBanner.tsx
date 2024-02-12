@@ -43,27 +43,21 @@ export function WelcomeBanner() {
 
   const action = isOnMobile ? null : (
     <>
-      {followUsButton}
+      {/* {followUsButton} */}
       {divider}
     </>
   );
 
   const text = (
     <>
-      This is a CheckDot Faucet. A website where you can get free CDT without
-      adds or payments. Invite your friends to claim some coins from the faucet,
-      it's a free trial of this amazing cryptocurrency!
-      <br />
-      <br />
-      This is a public faucet where anyone can donate to spread the CheckDot
-      blockchain. We provide the infrastructure to distribute the funds!
+      Here you can claim 10 CDTs once per address.<br/>
+      Please complete the captcha and provide an address in the required field.
     </>
   );
 
   const children = isOnMobile ? (
     <Stack direction="column">
       {text}
-      {followUsButton}
     </Stack>
   ) : (
     <>{text}</>
@@ -71,7 +65,7 @@ export function WelcomeBanner() {
 
   return (
     <>
-      <Banner pillText="WELCOME" sx={{marginBottom: 2}} action={action}>
+      <Banner pillText="FAUCET" pillColor="success" sx={{marginBottom: 2}} action={action}>
         {children}
       </Banner>
     </>

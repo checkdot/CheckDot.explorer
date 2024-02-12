@@ -3,6 +3,7 @@ import {Box, Chip, Typography} from "@mui/material";
 import {useTheme} from "@mui/system";
 import {grey, primary} from "../../../themes/colors/colorPalette";
 import {DoneAll} from "@mui/icons-material";
+import { TimeIcon } from "@mui/x-date-pickers";
 
 export function ChallengeRow({data}: any) {
   const theme = useTheme();
@@ -21,12 +22,13 @@ export function ChallengeRow({data}: any) {
         borderRadius: "12px",
         marginTop: "8px",
         paddingRight: 3,
+        filter: data.available === false ? 'brightness(0.2)' : undefined
       }}
     >
       <Box display={"flex"} alignItems={"center"}>
         <Box
           component={"img"}
-          src="https://checkdot.io/assets/img/landing/cdt-token.png"
+          src={data.image}
           width={80}
           height={80}
           minWidth={80}
@@ -35,7 +37,7 @@ export function ChallengeRow({data}: any) {
           marginRight={3}
         />
         <Box paddingY={1}>
-          <Typography>{data.title}</Typography>
+          <Typography style={{ userSelect: 'text' }}>{data.title}</Typography>
           <Chip
             label={`${data.points} Points`}
             size="small"
@@ -44,7 +46,14 @@ export function ChallengeRow({data}: any) {
           />
         </Box>
       </Box>
+      {data.available === undefined && data.validated !== true && data.progress !== undefined && (<Chip
+            label={data.progress}
+            size="small"
+            color={"success"}
+            sx={{fontSize: "0.75rem", marginTop: "0.5rem"}}
+          />)}
       {data.validated && <DoneAll color="success" />}
+      {data.available === false && <TimeIcon color="warning" />}
     </Box>
   );
 }

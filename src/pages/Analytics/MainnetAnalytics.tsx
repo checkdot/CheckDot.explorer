@@ -13,21 +13,32 @@ import NetworkInfo from "./NetworkInfo/NetworkInfo";
 import DailyGasConsumptionChart from "./Charts/DailyGasConsumptionChart";
 import MonthlyActiveUserChart from "./Charts/MonthlyActiveUserChart";
 import moment from "moment";
+import { useNetworkSelector } from "../../global-config/network-selection";
+import { useQuery } from "@tanstack/react-query";
+import { api_getAllAnalytics, api_getAnalytics } from "../../queries/api";
 
 export default function MainnetAnalytics() {
   const [days, setDays] = useState<ChartRangeDays>(
     ChartRangeDays.DEFAULT_RANGE,
   );
 
-  const data: any = {
-    max_tps_15_blocks_in_past_30_days: [
-      {
-        max_tps_15_blocks_in_past_30_days: 323,
-      },
-    ],
-    daily_max_tps_15_blocks: [
+  const [selectedNetwork,] = useNetworkSelector();
+  const allAnalyticsQuery = useQuery({
+    queryKey: ['get_Analytics'],
+    queryFn: async () => {
+      const result = await api_getAnalytics(selectedNetwork);
+
+      if (Object.keys(result).length === 0) {
+        return undefined;
+      }
+      return result.result;
+    }
+  });
+
+  const defaultData: any = {
+    daily_tps: [
       ... [...Array(30).keys()].reverse().map(x => {
-        return { max_tps_15_blocks: 0, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
+        return { tps: 0, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
       })
     ],
     daily_user_transactions: [
@@ -59,63 +70,53 @@ export default function MainnetAnalytics() {
       ... [...Array(30).keys()].reverse().map(x => {
         return { daily_active_user_count: 1, date: moment().subtract(x, 'days').format("YYYY-MM-DD") };
       })
-    ],
-    mau_signers: [
-      ... [...Array(30).keys()].reverse().map(x => {
-        return { mau_signer_30: 0, date: moment().subtract(x, 'months').format("YYYY-MM-DD") };
-      })
-    ],
+    ]
   };
-
-  if (!data) {
-    // TODO: apply better error message
-    return null;
-  }
 
   return (
     <Grid container spacing={3} marginTop={3}>
       <Grid item xs={12} md={12} lg={12} marginBottom={2}>
-        <NetworkInfo />
+        <NetworkInfo isOnHomePage={false} data={allAnalyticsQuery} />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <ChartRangeDaysSelect days={days} setDays={setDays} />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
         <DailyUserTransactionsChart
-          data={data.daily_user_transactions}
+          data={allAnalyticsQuery?.data?.daily_user_transactions ?? defaultData.daily_user_transactions}
           days={days}
         />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
-        <DailyPeakTPSChart data={data.daily_max_tps_15_blocks} days={days} />
+        <DailyPeakTPSChart data={allAnalyticsQuery?.data?.daily_tps ?? defaultData.daily_tps} days={days} />
       </Grid>
+      {/* <Grid item xs={12} md={6} lg={3}>
+        <MonthlyActiveUserChart data={allAnalyticsQuery?.data?.mau_signers ?? defaultData.mau_signers} days={days} />
+      </Grid> */}
       <Grid item xs={12} md={6} lg={3}>
-        <MonthlyActiveUserChart data={data.mau_signers} days={days} />
-      </Grid>
-      <Grid item xs={12} md={6} lg={3}>
-        <DailyActiveUserChart data={data.daily_active_users} days={days} />
+        <DailyActiveUserChart data={allAnalyticsQuery?.data?.daily_active_users ?? defaultData.daily_active_users} days={days} />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
         <DailyNewAccountsCreatedChart
-          data={data.daily_new_accounts_created}
+          data={allAnalyticsQuery?.data?.daily_new_accounts_created ?? defaultData.daily_new_accounts_created}
           days={days}
         />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
         <DailyDeployedScriptsChart
-          data={data.daily_deployed_scripts}
+          data={allAnalyticsQuery?.data?.daily_deployed_scripts ?? defaultData.daily_deployed_scripts}
           days={days}
         />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
         <DailyGasConsumptionChart
-          data={data.daily_gas_from_user_transactions}
+          data={allAnalyticsQuery?.data?.daily_gas_from_user_transactions ?? defaultData.daily_gas_from_user_transactions}
           days={days}
         />
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
         <DailyAvgGasUnitPriceChart
-          data={data.daily_average_gas_unit_price}
+          data={allAnalyticsQuery?.data?.daily_average_gas_unit_price ?? defaultData.daily_average_gas_unit_price}
           days={days}
         />
       </Grid>

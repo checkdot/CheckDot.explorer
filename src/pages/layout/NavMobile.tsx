@@ -71,8 +71,8 @@ export default function NavMobile() {
           maxWidth: "none",
         }}
       >
-        <MenuItem onClick={() => handleCloseAndNavigate("/transactions")}>
-          Transactions
+        <MenuItem onClick={() => handleCloseAndNavigate("/")}>
+          Home
         </MenuItem>
         <MenuItem onClick={() => handleCloseAndNavigate("/analytics")}>
           Analytics
@@ -80,14 +80,11 @@ export default function NavMobile() {
         <MenuItem onClick={() => handleCloseAndNavigate("/validators")}>
           Validators
         </MenuItem>
-        <MenuItem onClick={() => handleCloseAndNavigate("/blocks")}>
-          Blocks
-        </MenuItem>
         <MenuItem onClick={() => handleCloseAndNavigate("/faucet")}>
           Faucet
         </MenuItem>
         <MenuItem onClick={() => handleCloseAndNavigate("/challenges")}>
-          Challenges
+          Leaderboard
         </MenuItem>
         <Divider />
       </Menu>

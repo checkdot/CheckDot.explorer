@@ -64,32 +64,32 @@ export default function OverviewTab({data}: OverviewTabProps) {
       <ContentBox>
         <ContentRow
           title={"Block Reward:"}
-          value={undefined}
+          value={`${ethers.utils.formatEther(data.staticReward.add(data.transactionFees.sub(data.baseFeePerGas.mul(data.gasUsed))))} (${ethers.utils.formatEther(data.staticReward)} + ${ethers.utils.formatEther(data.transactionFees)} - ${ethers.utils.formatEther(data.baseFeePerGas.mul(data.gasUsed))})`}
           tooltip={getLearnMoreTooltip("block_reward")}
         />
         <ContentRow
           title={"Total Difficulty:"}
-          value={data.difficulty}
+          value={data.difficulty.toString()}
           tooltip={getLearnMoreTooltip("block_difficulty")}
         />
         <ContentRow
-          title={"Size:"}
-          value={`${data.gasUsed} (${(data.gasUsed * 100 / data.gasLimit).toFixed(2)}%)`}
+          title={"Gas Used:"}
+          value={`${data.gasUsed} (${(data.gasUsed.toString() * 100 / data.gasLimit.toString()).toFixed(2)}%)`}
           tooltip={getLearnMoreTooltip("block_size")}
         />
         <ContentRow
           title={"Gas Limit:"}
-          value={`${data.gasLimit}`}
+          value={`${data.gasLimit.toString()}`}
           tooltip={getLearnMoreTooltip("block_size")}
         />
         <ContentRow
           title={"Base Fee Per Gas:"}
-          value={`${ethers.utils.formatEther(ethers.BigNumber.from(data.baseFeePerGas))} CDT (${ethers.utils.formatUnits(ethers.BigNumber.from(data.baseFeePerGas), 'gwei')} Gwei)`}
+          value={`${ethers.utils.formatEther(data.baseFeePerGas)} CDT (${ethers.utils.formatUnits(data.baseFeePerGas, 'gwei')} Gwei)`}
           tooltip={getLearnMoreTooltip("block_baseFeePerGas")}
         />
         <ContentRow
           title={"Burnt Fees:"}
-          value={`${ethers.utils.formatEther(ethers.BigNumber.from(data.baseFeePerGas).mul(ethers.BigNumber.from(data.gasUsed)))} CDT`}
+          value={`${ethers.utils.formatEther(data.baseFeePerGas.mul(data.gasUsed))} CDT`}
           tooltip={getLearnMoreTooltip("block_burntFees")}
         />
       </ContentBox>

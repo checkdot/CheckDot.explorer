@@ -17,8 +17,10 @@ import TokensTab from "./Tabs/TokensTab";
 import CoinsTab from "./Tabs/CoinsTab";
 import {useParams} from "react-router-dom";
 import {useNavigate} from "../../routing";
+import ChallengesTab from "../Challenges/Tabs/ChallengesTab";
+import { AutoGraph } from "@mui/icons-material";
 
-const TAB_VALUES: TabValue[] = ["transactions", "resources", "modules", "info"];
+const TAB_VALUES: TabValue[] = ["transactions", "resources", "modules", "info", "challenges"];
 
 const TabComponents = Object.freeze({
   transactions: TransactionsTab,
@@ -27,6 +29,7 @@ const TabComponents = Object.freeze({
   resources: ResourcesTab,
   modules: ModulesTab,
   info: InfoTab,
+  challenges: ChallengesTab
 });
 
 export type TabValue = keyof typeof TabComponents;
@@ -45,6 +48,8 @@ function getTabLabel(value: TabValue): string {
       return "Modules";
     case "info":
       return "Info";
+    case "challenges":
+      return "Challenges";
     default:
       return assertNever(value);
   }
@@ -64,6 +69,8 @@ function getTabIcon(value: TabValue): JSX.Element {
       return <ExtensionIcon fontSize="small" />;
     case "info":
       return <DescriptionOutlinedIcon fontSize="small" />;
+    case "challenges":
+      return <AutoGraph fontSize="small" />;
     default:
       return assertNever(value);
   }

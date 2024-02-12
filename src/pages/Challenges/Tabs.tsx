@@ -9,11 +9,10 @@ import {useParams} from "react-router-dom";
 import {useNavigate} from "../../routing";
 import {AutoGraph, GridViewRounded} from "@mui/icons-material";
 
-const TAB_VALUES: TabValue[] = ["leaderboard", "challenges"];
+const TAB_VALUES: TabValue[] = ["leaderboard"];
 
 const TabComponents = Object.freeze({
-  leaderboard: LeaderboardTab,
-  challenges: ChallengesTab,
+  leaderboard: LeaderboardTab
 });
 
 export type TabValue = keyof typeof TabComponents;
@@ -22,8 +21,6 @@ function getTabLabel(value: TabValue): string {
   switch (value) {
     case "leaderboard":
       return "Leaderboard";
-    case "challenges":
-      return "Challenges";
     default:
       return assertNever(value);
   }
@@ -33,8 +30,6 @@ function getTabIcon(value: TabValue): JSX.Element {
   switch (value) {
     case "leaderboard":
       return <GridViewRounded fontSize="small" />;
-    case "challenges":
-      return <AutoGraph fontSize="small" />;
     default:
       return assertNever(value);
   }

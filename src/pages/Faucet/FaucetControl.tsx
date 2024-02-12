@@ -5,16 +5,43 @@ import {
 import {Alert, Box, Button, InputAdornment, TextField} from "@mui/material";
 import CanvasCaptcha from "./components/CaptchaModal";
 import {useState} from "react";
+import { ethers } from "ethers";
+import { useNetworkSelector } from "../../global-config/network-selection";
+import { api_claimFaucet } from "../../queries/api";
+import HashButton, { HashType } from "../../components/HashButton";
 
 export default function FaucetControl() {
   const [captchaOpen, setCaptchaOpen] = useState(false);
   const [status, setStatus] = useState<"success" | "error">();
+  const [address, setAddress] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [hash, setHash] = useState<string | undefined>(undefined);
 
-  const onFaucet = () => {
-    setStatus("success");
+  const [network,] = useNetworkSelector();
+
+  const onFaucet = async () => {
+    try {
+      const queryResult = await api_claimFaucet(network, address);
+
+      if (queryResult.result !== undefined && typeof queryResult.result === 'string') {
+        setHash(queryResult.result);
+      } else if (queryResult.result !== undefined && queryResult.result.error !== undefined) {
+        setError(queryResult.result.error);
+      }
+      setStatus("success");
+    } catch (e) {
+
+      setStatus("error");
+    }
   };
 
   const onSubmit = () => {
+    // check add
+    setError('');
+    if (!ethers.utils.isAddress(address)) {
+      setError('Invalid Address Format');
+      return ;
+    }
     setCaptchaOpen(true);
   };
 
@@ -36,13 +63,27 @@ export default function FaucetControl() {
           ),
         }}
         fullWidth
+        onChange={(event) => { setAddress(event.target.value); }}
       />
-      {status && (
-        <Alert severity={status} sx={{marginTop: '16px'}}>
-          {status === "success"
-            ? "Got 100 CDT Successfully"
-            : "Failed to get Faucet. Please contact the team"}
+      {status === 'success' && hash && (
+        <Alert severity={'success'} sx={{marginTop: '16px'}}>
+          Transaction Succesfully Launched
+          <HashButton
+            hash={hash}
+            type={HashType.TRANSACTION}
+            sx={{display: "flex", justifyContent: "flex-end"}}
+          />
         </Alert>
+      )}
+      {status === 'error' && (
+        <Alert severity={'error'} sx={{marginTop: '16px'}}>
+          Failed to get Faucet. Please contact the team
+        </Alert>
+      )}
+      {error !== '' && (
+        <Alert severity={'error'} sx={{marginTop: '16px'}}>
+        {error}
+      </Alert>
       )}
       <Button
         variant="contained"
