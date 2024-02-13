@@ -28,7 +28,7 @@ export enum HashType {
   ACCOUNT = "account",
   TRANSACTION = "transaction",
   OTHERS = "others",
-  BLOCK = 'block'
+  BLOCK = "block",
 }
 
 function getHashLinkStr(hash: string, type: HashType): string {
@@ -67,6 +67,7 @@ interface HashButtonProps extends BoxProps {
   hash: string;
   type: HashType;
   size?: "small" | "large";
+  hideImage?: boolean;
   isValidator?: boolean;
 }
 
@@ -75,6 +76,7 @@ export default function HashButton({
   type,
   size = "small",
   isValidator = false,
+  hideImage = false,
   ...props
 }: HashButtonProps) {
   if (type === HashType.BLOCK) {
@@ -86,7 +88,7 @@ export default function HashButton({
         isValidator={isValidator}
         {...props}
       />
-    )
+    );
   } else if (type === HashType.ACCOUNT) {
     return (
       <AccountHashButtonInner
@@ -94,6 +96,7 @@ export default function HashButton({
         type={type}
         size={size}
         isValidator={isValidator}
+        hideImage={hideImage}
         {...props}
       />
     );
@@ -106,6 +109,7 @@ interface AccountHashButtonInnerProps extends BoxProps {
   hash: string;
   type: HashType;
   size?: "small" | "large";
+  hideImage?: boolean;
   isValidator: boolean;
 }
 
@@ -113,6 +117,7 @@ function AccountHashButtonInner({
   hash,
   type,
   size = "small",
+  hideImage = false,
   isValidator,
 }: AccountHashButtonInnerProps) {
   const truncateHash =
@@ -130,7 +135,7 @@ function AccountHashButtonInner({
 
   return (
     <Stack direction="row" alignItems={"center"} spacing={1}>
-      <IdenticonImg address={hash} />
+      {!hideImage && <IdenticonImg address={hash} />}
       <Link
         to={getHashLinkStr(hash, type)}
         sx={{
@@ -138,7 +143,8 @@ function AccountHashButtonInner({
           "&:hover": {
             backgroundColor: codeBlockColorClickableOnHover,
           },
-          color: theme.palette.mode === "dark" ? primary['500'] : primary['700'],
+          color:
+            theme.palette.mode === "dark" ? primary["500"] : primary["700"],
           padding: "0.15rem 0.35rem 0.15rem 1rem",
           overflow: "hidden",
           whiteSpace: "nowrap",
@@ -213,7 +219,8 @@ function BlockHashButtonInner({
           "&:hover": {
             backgroundColor: codeBlockColorClickableOnHover,
           },
-          color: theme.palette.mode === "dark" ? primary['500'] : primary['700'],
+          color:
+            theme.palette.mode === "dark" ? primary["500"] : primary["700"],
           padding: "0.15rem 0.35rem 0.15rem 1rem",
           overflow: "hidden",
           whiteSpace: "nowrap",

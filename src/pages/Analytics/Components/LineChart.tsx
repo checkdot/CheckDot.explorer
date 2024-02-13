@@ -32,6 +32,7 @@ type LineChartProps = {
   fill?: boolean;
   tooltipsLabelFunc?: (context: any) => string;
   decimals?: number;
+  props?: any;
 };
 
 export default function LineChart({
@@ -40,6 +41,7 @@ export default function LineChart({
   fill,
   tooltipsLabelFunc,
   decimals,
+  props,
 }: LineChartProps) {
   const options = {
     responsive: true,
@@ -110,7 +112,7 @@ export default function LineChart({
 
   return (
     <Box>
-      <Line options={options} data={data} />
+      <Line options={options} data={data} {...props} />
     </Box>
   );
 }

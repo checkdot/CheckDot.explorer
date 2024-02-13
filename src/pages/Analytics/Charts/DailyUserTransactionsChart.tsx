@@ -12,22 +12,30 @@ function getDataset(data: any[], days: number): number[] {
 type DailyUserTransactionsChartProps = {
   data: any[];
   days: ChartRangeDays;
+  label?: string;
+  tooltip?: string;
+  cardProps?: any;
+  chartProps?: any;
 };
 
 export default function DailyUserTransactionsChart({
   data,
   days,
+  label,
+  tooltip,
+  cardProps,
+  chartProps,
 }: DailyUserTransactionsChartProps) {
   const labels = getLabels(data, days);
   const dataset = getDataset(data, days);
 
   return (
-    <Card>
+    <Card {...cardProps}>
       <ChartTitle
-        label="User Transactions"
-        tooltip="Daily transaction count of user transactions."
+        label={label ?? "User Transactions"}
+        tooltip={tooltip ?? "Daily transaction count of user transactions."}
       />
-      <LineChart labels={labels} dataset={dataset} />
+      <LineChart labels={labels} dataset={dataset} props={chartProps} />
     </Card>
   );
 }
