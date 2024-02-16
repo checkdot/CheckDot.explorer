@@ -1,9 +1,9 @@
-import React from "react";
-import {Typography, Stack, useTheme} from "@mui/material";
-import {grey} from "../../../themes/colors/colorPalette";
-import {CardWithStyle} from "../../../components/Card";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import {Stack, Typography, useTheme} from "@mui/material";
+import React from "react";
+import {CardWithStyle} from "../../../components/Card";
 import StyledTooltip from "../../../components/StyledTooltip";
+import {grey} from "../../../themes/colors/colorPalette";
 
 function Data({children}: {children: React.ReactNode}) {
   return (
