@@ -17,7 +17,7 @@ export default function LatestTransactionsPreview() {
   const lastTransactions = useQuery({
     queryKey: ["api_getLatestTransactions"],
     queryFn: async () => {
-      const queryResult = await api_getLatestTransactions(selectedNetwork);
+      const queryResult = await api_getLatestTransactions(selectedNetwork, 1, 6);
       return queryResult.result
         .slice(0, 6)
         .map((x: any) => buildTransactionFromQueryResult(x));
@@ -62,7 +62,7 @@ export default function LatestTransactionsPreview() {
             },
           }}
         >
-          View All Transactions
+          View All Transactions (Comming Soon!)
           <ChevronRight />
         </Link>
       </Stack>

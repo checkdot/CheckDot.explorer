@@ -4,13 +4,15 @@ import TotalSupply from "./TotalSupply";
 import TotalTransactions from "./TotalTransactions";
 import {Link} from "../../../routing";
 import {useQuery} from "@tanstack/react-query";
-import {api_getAnalytics} from "../../../queries/api";
+import {api_getAnalytics, api_getLatestBlocks} from "../../../queries/api";
 import {useNetworkSelector} from "../../../global-config/network-selection";
 import LatestBlock from "./LatestBlock";
 import Marketcap from "./Marketcap";
 import DailyUserTransactionsChart from "../Charts/DailyUserTransactionsChart";
 import moment from "moment";
 import Canvas3D from "./Canvas3D";
+import { buildBlockFromQueryResult } from "../../utils";
+import { BigNumber, ethers } from "ethers";
 
 type CardStyle = "default" | "outline";
 
@@ -45,17 +47,38 @@ export default function ExplorerNetworkInfo() {
     refetchInterval: 10000,
   });
 
-  const allAnalyticsQuery = useQuery({
-    queryKey: ["get_Analytics"],
+  const lastBlocks = useQuery({
+    queryKey: ["api_getLatestBlocks"],
     queryFn: async () => {
-      const result = await api_getAnalytics(selectedNetwork);
+      const queryResult = await api_getLatestBlocks(selectedNetwork);
+      return queryResult.result
+        .map((x: any) => {
+          let block = buildBlockFromQueryResult(x, true);
 
-      if (Object.keys(result).length === 0) {
-        return undefined;
-      }
-      return result.result;
+          return {
+            block_height: block.block_height,
+            block_timestamp: block.timestamp,
+            hash: block.hash,
+            size: Number(block.gasUsed.mul(BigNumber.from(100)).div(block.gasLimit).toString()) / 100,
+            txns: x.transactions.length,
+            reward: ethers.utils.formatEther(block.staticReward),
+          }
+        });
     },
+    refetchInterval: 10000,
   });
+
+  // const allAnalyticsQuery = useQuery({
+  //   queryKey: ["get_Analytics"],
+  //   queryFn: async () => {
+  //     const result = await api_getAnalytics(selectedNetwork);
+
+  //     if (Object.keys(result).length === 0) {
+  //       return undefined;
+  //     }
+  //     return result.result;
+  //   },
+  // });
 
   const defaultData: any = {
     daily_user_transactions: [
@@ -90,7 +113,9 @@ export default function ExplorerNetworkInfo() {
           </Grid>
           <Grid item xs={12} md={6}>
             <LinkableContainer linkToAnalyticsPage>
-              <Canvas3D cube1={0.5} cube2={0.2} cube3={1} />
+              { lastBlocks.data && lastBlocks.data.length > 3 && (
+                <Canvas3D cube1={lastBlocks.data[lastBlocks.data.length - 3].size} cube2={lastBlocks.data[lastBlocks.data.length - 2].size} cube3={lastBlocks.data[lastBlocks.data.length - 1].size} />
+              )}
             </LinkableContainer>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -105,7 +130,7 @@ export default function ExplorerNetworkInfo() {
         <Grid item xs={12} md={12} lg={4}>
           <DailyUserTransactionsChart
             data={
-              allAnalyticsQuery?.data?.daily_user_transactions ??
+              analyticsQuery?.data?.daily_user_transactions ??
               defaultData.daily_user_transactions
             }
             days={7}

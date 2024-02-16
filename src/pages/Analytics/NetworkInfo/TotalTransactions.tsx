@@ -6,8 +6,8 @@ import {numberWithCommas} from "../utils";
 export default function TotalTransactions({data, card}: any) {
   return card ? (
     <DoubleMetricCard
-      data1={`${data?.totalSupply ? numberWithCommas(data.totalTransactions) : "..."}`}
-      data2="49 Gwei"
+      data1={`${data?.totalTransactions ? numberWithCommas(data.totalTransactions) : "..."}`}
+      data2={`${data?.gasPrice ? `${numberWithCommas(data.gasPrice)} Gwei` : "..."}`}
       label1="Total Transactions"
       label2="Gas Price"
       cardLabel="Transactions"

@@ -94,7 +94,6 @@ function BlockTxsCell({block}: BlockCellProps) {
             component={"span"}
             color={theme.palette.mode === "dark" ? grey[400] : grey[500]}
           >
-            in 12 secs
           </Box>
         </Box>
       </Stack>
@@ -106,7 +105,7 @@ function BlockRewardCell({block}: BlockCellProps) {
   const theme = useTheme();
 
   return (
-    <GeneralTableCell>
+    <GeneralTableCell title="Rewards">
       <Typography
         width={"fit-content"}
         fontSize={14}

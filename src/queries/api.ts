@@ -1,12 +1,21 @@
 import { NetworkKey, networksURLS } from "../constants";
 import { useNetworkSelector } from "../global-config/network-selection";
 
-export const api_getLatestTransactions = async (selectedNetwork: NetworkKey) => {
+export const api_getLatestTransactions = async (selectedNetwork: NetworkKey, page: number, size: number) => {
     return request<any>(
         `${networksURLS[selectedNetwork]}`,
         "api_getLatestTransactions",
         "POST",
-        {"jsonrpc":"2.0","method":"api_getLatestTransactions","params": [],"id":1}
+        {"jsonrpc":"2.0","method":"api_getLatestTransactions","params": [page, size],"id":1}
+    );
+  }
+
+export const api_getLatestBlocks = async (selectedNetwork: NetworkKey) => {
+    return request<any>(
+        `${networksURLS[selectedNetwork]}`,
+        "api_getLatestBlocks",
+        "POST",
+        {"jsonrpc":"2.0","method":"api_getLatestBlocks","params": [],"id":1}
     );
   }
 

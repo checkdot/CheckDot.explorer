@@ -4,60 +4,43 @@ import {Link} from "../../routing";
 import {useTheme} from "@mui/system";
 import {grey} from "../../themes/colors/colorPalette";
 import {ChevronRight} from "@mui/icons-material";
+import { useQuery } from "@tanstack/react-query";
+import { useNetworkSelector } from "../../global-config/network-selection";
+import { api_getLatestBlocks } from "../../queries/api";
+import { buildBlockFromQueryResult } from "../utils";
+import { BigNumber, ethers } from "ethers";
 
 export default function LatestBlocksPreview() {
   const theme = useTheme();
-  const recentBlocks = [
-    {
-      block_height: 526,
-      block_timestamp: 1707803851600,
-      hash: "0xf1fecfd19d939e6af2ad6dd2e3d618e38f733fd0ed3a21bf8e79fc967ab250ac",
-      txns: 10,
-      reward: 0.0023,
+  const [selectedNetwork] = useNetworkSelector();
+
+  const lastBlocks = useQuery({
+    queryKey: ["api_getLatestBlocks"],
+    queryFn: async () => {
+      const queryResult = await api_getLatestBlocks(selectedNetwork);
+      return queryResult.result
+        .map((x: any) => {
+          let block = buildBlockFromQueryResult(x, true);
+
+          return {
+            block_height: block.block_height,
+            block_timestamp: block.timestamp,
+            hash: block.hash,
+            size: Number(block.gasUsed.mul(BigNumber.from(100)).div(block.gasLimit).toString()) / 100,
+            txns: x.transactions.length,
+            reward: ethers.utils.formatEther(block.staticReward),
+          }
+        });
     },
-    {
-      block_height: 525,
-      block_timestamp: 1707803841580,
-      hash: "0xf1fecfd19d939e6af2ad6dd2e3d618e38f733fd0ed3a21bf8e79fc967ab250ac",
-      txns: 10,
-      reward: 0.0023,
-    },
-    {
-      block_height: 524,
-      block_timestamp: 1707803831560,
-      hash: "0xf1fecfd19d939e6af2ad6dd2e3d618e38f733fd0ed3a21bf8e79fc967ab250ac",
-      txns: 10,
-      reward: 0.0023,
-    },
-    {
-      block_height: 523,
-      block_timestamp: 1707803821540,
-      hash: "0xf1fecfd19d939e6af2ad6dd2e3d618e38f733fd0ed3a21bf8e79fc967ab250ac",
-      txns: 10,
-      reward: 0.0023,
-    },
-    {
-      block_height: 523,
-      block_timestamp: 1707803821540,
-      hash: "0xf1fecfd19d939e6af2ad6dd2e3d618e38f733fd0ed3a21bf8e79fc967ab250ac",
-      txns: 10,
-      reward: 0.0023,
-    },
-    {
-      block_height: 523,
-      block_timestamp: 1707803821540,
-      hash: "0xf1fecfd19d939e6af2ad6dd2e3d618e38f733fd0ed3a21bf8e79fc967ab250ac",
-      txns: 10,
-      reward: 0.0023,
-    },
-  ];
+    refetchInterval: 10000,
+  });
 
   return (
     <>
       <Stack spacing={0.5}>
         <Typography variant="h5">Latest Blocks</Typography>
         <Box sx={{overflowX: "auto", width: "auto"}}>
-          <LatestBlocksTable blocks={recentBlocks} />
+          { lastBlocks.data && <LatestBlocksTable blocks={lastBlocks.data} /> }
         </Box>
         <Link
           to="/"
@@ -87,7 +70,7 @@ export default function LatestBlocksPreview() {
             },
           }}
         >
-          View All Blocks
+          View All Blocks (Comming Soon!)
           <ChevronRight />
         </Link>
       </Stack>
