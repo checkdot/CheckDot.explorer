@@ -1,18 +1,17 @@
-import React, {createContext} from "react";
 import Grid from "@mui/material/Grid";
+import {useQuery} from "@tanstack/react-query";
+import {BigNumber, ethers} from "ethers";
+import moment from "moment";
+import React, {createContext} from "react";
+import {useNetworkSelector} from "../../../global-config/network-selection";
+import {api_getAnalytics, api_getLatestBlocks} from "../../../queries/api";
+import {Link} from "../../../routing";
+import {buildBlockFromQueryResult} from "../../utils";
+import DailyUserTransactionsChart from "../Charts/DailyUserTransactionsChart";
+import Canvas3D from "./Canvas3D";
+import LatestBlock from "./LatestBlock";
 import TotalSupply from "./TotalSupply";
 import TotalTransactions from "./TotalTransactions";
-import {Link} from "../../../routing";
-import {useQuery} from "@tanstack/react-query";
-import {api_getAnalytics, api_getLatestBlocks} from "../../../queries/api";
-import {useNetworkSelector} from "../../../global-config/network-selection";
-import LatestBlock from "./LatestBlock";
-import Marketcap from "./Marketcap";
-import DailyUserTransactionsChart from "../Charts/DailyUserTransactionsChart";
-import moment from "moment";
-import Canvas3D from "./Canvas3D";
-import { buildBlockFromQueryResult } from "../../utils";
-import { BigNumber, ethers } from "ethers";
 
 type CardStyle = "default" | "outline";
 
@@ -51,19 +50,24 @@ export default function ExplorerNetworkInfo() {
     queryKey: ["api_getLatestBlocks"],
     queryFn: async () => {
       const queryResult = await api_getLatestBlocks(selectedNetwork);
-      return queryResult.result
-        .map((x: any) => {
-          let block = buildBlockFromQueryResult(x, true);
+      return queryResult.result.map((x: any) => {
+        const block = buildBlockFromQueryResult(x, true);
 
-          return {
-            block_height: block.block_height,
-            block_timestamp: block.timestamp,
-            hash: block.hash,
-            size: Number(block.gasUsed.mul(BigNumber.from(100)).div(block.gasLimit).toString()) / 100,
-            txns: x.transactions.length,
-            reward: ethers.utils.formatEther(block.staticReward),
-          }
-        });
+        return {
+          block_height: block.block_height,
+          block_timestamp: block.timestamp,
+          hash: block.hash,
+          size:
+            Number(
+              block.gasUsed
+                .mul(BigNumber.from(100))
+                .div(block.gasLimit)
+                .toString(),
+            ) / 100,
+          txns: x.transactions.length,
+          reward: ethers.utils.formatEther(block.staticReward),
+        };
+      });
     },
     refetchInterval: 10000,
   });
@@ -113,8 +117,12 @@ export default function ExplorerNetworkInfo() {
           </Grid>
           <Grid item xs={12} md={6}>
             <LinkableContainer linkToAnalyticsPage>
-              { lastBlocks.data && lastBlocks.data.length > 3 && (
-                <Canvas3D cube1={lastBlocks.data[lastBlocks.data.length - 3].size} cube2={lastBlocks.data[lastBlocks.data.length - 2].size} cube3={lastBlocks.data[lastBlocks.data.length - 1].size} />
+              {lastBlocks.data && lastBlocks.data.length > 3 && (
+                <Canvas3D
+                  cube1={lastBlocks.data[lastBlocks.data.length - 3].size}
+                  cube2={lastBlocks.data[lastBlocks.data.length - 2].size}
+                  cube3={lastBlocks.data[lastBlocks.data.length - 1].size}
+                />
               )}
             </LinkableContainer>
           </Grid>
