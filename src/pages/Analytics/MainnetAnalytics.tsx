@@ -14,7 +14,6 @@ import DailyUserTransactionsChart from "./Charts/DailyUserTransactionsChart";
 import ChartRangeDaysSelect, {
   ChartRangeDays,
 } from "./Components/ChartRangeDaysSelect";
-import Canvas3D from "./NetworkInfo/Canvas3D";
 import NetworkInfo from "./NetworkInfo/NetworkInfo";
 
 export default function MainnetAnalytics() {
@@ -98,9 +97,6 @@ export default function MainnetAnalytics() {
     <Grid container spacing={3} marginTop={3}>
       <Grid item xs={12} md={12} lg={12} marginBottom={2}>
         <NetworkInfo isOnHomePage={false} data={allAnalyticsQuery} />
-      </Grid>
-      <Grid item xs={12} md={12} lg={12} marginBottom={2}>
-        <Canvas3D cube1={0.5} cube2={0.2} cube3={1} />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <ChartRangeDaysSelect days={days} setDays={setDays} />

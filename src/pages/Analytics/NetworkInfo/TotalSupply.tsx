@@ -6,7 +6,7 @@ import { numberWithCommas } from "../utils";
 export default function TotalSupply({ data }: any) {
   return (
     <MetricCard
-      data={`${data?.totalSupply ? numberWithCommas(data.totalSupply) : '...'} CDT`}
+      data={`${data?.totalSupply ? numberWithCommas(Number(data.totalSupply).toFixed(0)) : '...'} CDT`}
       label="Total Supply"
       tooltip="Total Supply"
     />

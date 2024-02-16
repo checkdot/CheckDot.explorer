@@ -127,37 +127,71 @@ export const buildTransactionFromQueryResult = (result: any) => {
 
   const status = Number(ethers.BigNumber.from(tx.status).toString());
 
-  return {
-    version: '1',
-    hash: tx.transactionHash,
-    blockNumber: tx.blockNumber,
-    sequence_number: parsedTx.nonce,//tx.transactionIndex ? Number(ethers.BigNumber.from(tx.transactionIndex).toString()) : 0,
-    type: "user_transaction",
-    counterparty: {
-      role: "receiver",
-      address: tx.to,
-    },
-    success: status === 1 ? true : status === 2 ? false : undefined,
-    sender: tx.from,
-    receiver: tx.to,
-    payload: {
-      type: tx.type,
-      data: parsedTx.data
-    },
-    amount: ethers.utils.formatEther(parsedTx.value),
-    expiration_timestamp_secs: 1706106324,
-    timestamp: tx.blockTimestamp ? tx.blockTimestamp * 1000 : undefined,//1706106026491801,
-    gas_used: tx.gasUsed ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed).mul(ethers.BigNumber.from(tx.effectiveGasPrice))) : undefined,
-    gas_unit_price: tx.effectiveGasPrice ? ethers.utils.formatEther(ethers.BigNumber.from(tx.effectiveGasPrice)) : undefined,
-    gas_fee: tx.effectivePriorityFee ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed).mul(ethers.BigNumber.from(tx.effectivePriorityFee))) : undefined,
-    signature: {
-      r: parsedTx.r,
-      s: parsedTx.s,
-      v: parsedTx.v
-    },
-    events: [],
-    status: Number(ethers.BigNumber.from(tx.status).toString())
-  };
+  try {
+    return {
+      version: '1',
+      hash: tx.transactionHash,
+      blockNumber: tx.blockNumber,
+      sequence_number: parsedTx.nonce,//tx.transactionIndex ? Number(ethers.BigNumber.from(tx.transactionIndex).toString()) : 0,
+      type: "user_transaction",
+      counterparty: {
+        role: "receiver",
+        address: tx.to,
+      },
+      success: status === 1 ? true : status === 2 ? false : undefined,
+      sender: tx.from,
+      receiver: tx.to,
+      payload: {
+        type: tx.type,
+        data: parsedTx.data
+      },
+      amount: ethers.utils.formatEther(parsedTx.value),
+      expiration_timestamp_secs: 1706106324,
+      timestamp: tx.blockTimestamp ? tx.blockTimestamp * 1000 : undefined,//1706106026491801,
+      gas_used: tx.gasUsed ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed).mul(ethers.BigNumber.from(tx.effectiveGasPrice))) : undefined,
+      gas_unit_price: tx.effectiveGasPrice ? ethers.utils.formatEther(ethers.BigNumber.from(tx.effectiveGasPrice)) : undefined,
+      gas_fee: tx.effectivePriorityFee ? ethers.utils.formatEther(ethers.BigNumber.from(tx.gasUsed).mul(ethers.BigNumber.from(tx.effectivePriorityFee))) : undefined,
+      signature: {
+        r: parsedTx.r,
+        s: parsedTx.s,
+        v: parsedTx.v
+      },
+      events: [],
+      status: Number(ethers.BigNumber.from(tx.status).toString())
+    };
+  } catch (e) {
+    return {
+      version: '1',
+      hash: tx.transactionHash,
+      blockNumber: tx.blockNumber,
+      sequence_number: parsedTx.nonce,//tx.transactionIndex ? Number(ethers.BigNumber.from(tx.transactionIndex).toString()) : 0,
+      type: "user_transaction",
+      counterparty: {
+        role: "receiver",
+        address: tx.to,
+      },
+      success: status === 1 ? true : status === 2 ? false : undefined,
+      sender: tx.from,
+      receiver: tx.to,
+      payload: {
+        type: tx.type,
+        data: parsedTx.data
+      },
+      amount: ethers.utils.formatEther(parsedTx.value),
+      expiration_timestamp_secs: 1706106324,
+      timestamp: tx.blockTimestamp ? tx.blockTimestamp * 1000 : undefined,//1706106026491801,
+      gas_used: undefined,
+      gas_unit_price: undefined,
+      gas_fee: undefined,
+      signature: {
+        r: parsedTx.r,
+        s: parsedTx.s,
+        v: parsedTx.v
+      },
+      events: [],
+      status: Number(ethers.BigNumber.from(tx.status).toString())
+    };
+  }
 }
 
 export const buildBlockFromQueryResult = (result: any, ignoreTransactions: boolean = false) => {

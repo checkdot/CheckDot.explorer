@@ -15,8 +15,15 @@ export default function UserTransactionsPreview() {
   const lastTransactions = useQuery({
     queryKey: ["api_getLatestTransactions"],
     queryFn: async () => {
-      const queryResult = await api_getLatestTransactions(selectedNetwork);
-      return queryResult.result.map((x: any) => buildTransactionFromQueryResult(x));
+      try {
+        const queryResult = await api_getLatestTransactions(selectedNetwork);
+        const transactions = queryResult.result.map((x: any) => buildTransactionFromQueryResult(x));
+        console.log(transactions);
+        return transactions;
+      } catch(e) {
+        console.error(e);
+        return [];
+      }
     },
     refetchInterval: 10000
   });

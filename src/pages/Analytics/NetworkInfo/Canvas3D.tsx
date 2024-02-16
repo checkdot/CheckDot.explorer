@@ -3,12 +3,11 @@ import {css} from "@emotion/react";
 import {useTheme} from "@mui/material";
 import React, {Suspense, useEffect, useRef} from "react";
 import {CardWithStyle} from "../../../components/Card";
+import { style } from "@mui/system";
 
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
-const StyleCard = css`
-  padding: 0;
-`;
+let StyleCard = css``;
 
 const StyleCanvas = css`
   border-radius: inherit;
@@ -34,6 +33,22 @@ const Canvas3D = ({cube1, cube2, cube3}: Canvas3DProps) => {
   const LiquidCube2 = useRef<any>();
   const LiquidCube3 = useRef<any>();
   const Backdrop = useRef<any>();
+
+  if (theme.palette.mode === "light") {
+    StyleCard = css`
+      background-color: #cceae5!important;
+      padding: 23px;
+      height: 121px;
+      padding-top: 0px;
+    `;
+  } else {
+    StyleCard = css`
+      background-color: #0e1820!important;
+      padding: 23px;
+      height: 121px;
+      padding-top: 0px;
+    `;
+  }
 
   const initMesh = (id: string) => {
     if (!spline.current) return;

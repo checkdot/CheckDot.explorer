@@ -10,6 +10,7 @@ import LatestBlock from "./LatestBlock";
 import Marketcap from "./Marketcap";
 import DailyUserTransactionsChart from "../Charts/DailyUserTransactionsChart";
 import moment from "moment";
+import Canvas3D from "./Canvas3D";
 
 type CardStyle = "default" | "outline";
 
@@ -89,7 +90,7 @@ export default function ExplorerNetworkInfo() {
           </Grid>
           <Grid item xs={12} md={6}>
             <LinkableContainer linkToAnalyticsPage>
-              <Marketcap data={analyticsQuery.data} />
+              <Canvas3D cube1={0.5} cube2={0.2} cube3={1} />
             </LinkableContainer>
           </Grid>
           <Grid item xs={12} md={6}>
