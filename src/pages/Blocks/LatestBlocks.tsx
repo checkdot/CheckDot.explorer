@@ -10,12 +10,15 @@ import {grey} from "../../themes/colors/colorPalette";
 import {ViewAgendaOutlined} from "@mui/icons-material";
 import HashButton, {HashType} from "../../components/HashButton";
 
-function getAgeInSeconds(block: any): string {
-  const blockTimestamp = parseTimestamp(block.block_timestamp);
-  const nowTimestamp = parseTimestamp(moment.now().toString());
-  const duration = moment.duration(nowTimestamp.diff(blockTimestamp));
-  const durationInSec = duration.asSeconds().toFixed(0);
-  return durationInSec;
+const momentLatestBlockDisplay = (block: any) => {
+  if (block.block_timestamp === undefined) {
+    return '...';
+  }
+  const latestBlock = moment(block.block_timestamp);
+  const minutesRemaining = latestBlock.diff(moment(), 'minutes');
+  const secondsRemaining = latestBlock.diff(moment(), 'seconds') - (minutesRemaining * 60);
+
+  return `${-minutesRemaining} min(s) ${-secondsRemaining} sec(s) ago`;
 }
 
 type BlockCellProps = {
@@ -61,7 +64,7 @@ function BlockHeightCell({block}: BlockCellProps) {
       <Typography
         color={theme.palette.mode === "dark" ? grey[400] : grey[500]}
         fontSize={12}
-      >{`${getAgeInSeconds(block)}s ago`}</Typography>
+      >{`${momentLatestBlockDisplay(block)}`}</Typography>
     </GeneralTableCell>
   );
 }

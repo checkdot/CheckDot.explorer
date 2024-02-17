@@ -24,7 +24,8 @@ export default function ExplorerRoutes() {
       <QueryClientProvider client={queryClient}>
         <ExplorerLayout>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/old-explorer" element={<LandingPage />} />
+            <Route path="/" element={<HomeExplorerPage />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/validators" element={<ValidatorsPage />}>
               <Route path=":tab" element={<ValidatorsPage />} />
@@ -80,7 +81,6 @@ export default function ExplorerRoutes() {
             <Route path="/challenges" element={<ChallengesPage />}>
               <Route path=":tab" element={<ChallengesPage />} />
             </Route>
-            <Route path="/explorer" element={<HomeExplorerPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </ExplorerLayout>

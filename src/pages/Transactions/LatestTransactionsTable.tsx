@@ -18,12 +18,15 @@ import {CodeLineBox} from "../../components/CodeLineBox";
 import {ArticleOutlined} from "@mui/icons-material";
 import moment from "moment";
 
-function getAgeInSeconds(transaction: any): string {
-  const timestamp = parseTimestamp(transaction.timestamp);
-  const nowTimestamp = parseTimestamp(moment.now().toString());
-  const duration = moment.duration(nowTimestamp.diff(timestamp));
-  const durationInSec = duration.asSeconds().toFixed(0);
-  return durationInSec;
+const momentTransactionDisplay = (transaction: any) => {
+  if (transaction.timestamp === undefined) {
+    return '...';
+  }
+  const latestBlock = moment(transaction.timestamp);
+  const minutesRemaining = latestBlock.diff(moment(), 'minutes');
+  const secondsRemaining = latestBlock.diff(moment(), 'seconds') - (minutesRemaining * 60);
+
+  return `${-minutesRemaining} min(s) ${-secondsRemaining} sec(s) ago`;
 }
 
 function TransactionLogoCell() {
@@ -62,7 +65,7 @@ function TransactionHashCell({transaction}: any) {
         fontSize={12}
       >
         {"timestamp" in transaction
-          ? `${getAgeInSeconds(transaction)}s ago`
+          ? `${momentTransactionDisplay(transaction)}`
           : "-"}
       </Typography>
     </GeneralTableCell>
