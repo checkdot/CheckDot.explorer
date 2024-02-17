@@ -119,9 +119,9 @@ export default function ExplorerNetworkInfo() {
             <LinkableContainer linkToAnalyticsPage>
               {lastBlocks.data && lastBlocks.data.length > 3 && (
                 <Canvas3D
-                  cube1={lastBlocks.data[lastBlocks.data.length - 3].size}
-                  cube2={lastBlocks.data[lastBlocks.data.length - 2].size}
-                  cube3={lastBlocks.data[lastBlocks.data.length - 1].size}
+                  cube1={lastBlocks.data[2].size}
+                  cube2={lastBlocks.data[1].size}
+                  cube3={lastBlocks.data[0].size}
                 />
               )}
             </LinkableContainer>
