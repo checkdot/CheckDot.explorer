@@ -47,27 +47,23 @@ function BlockAgeCell({block}: BlockCellProps) {
 function BlockHashCell({block}: BlockCellProps) {
   return (
     <GeneralTableCell sx={{textAlign: "left"}}>
-      <HashButton hash={block.block_hash} type={HashType.OTHERS} />
+      <HashButton hash={block.hash} type={HashType.OTHERS} />
     </GeneralTableCell>
   );
 }
 
-function FirstVersionCell({block}: BlockCellProps) {
+function TxnCell({block}: BlockCellProps) {
   return (
-    <GeneralTableCell sx={{textAlign: "right"}}>
-      <Link to={`/tx/${block.first_version}`} target="_blank" underline="none">
-        {block.first_version}
-      </Link>
+    <GeneralTableCell sx={{textAlign: "left"}}>
+      {block.txns}
     </GeneralTableCell>
   );
 }
 
-function LastVersionCell({block}: BlockCellProps) {
+function BaseFeeCell({block}: BlockCellProps) {
   return (
-    <GeneralTableCell sx={{textAlign: "right"}}>
-      <Link to={`/tx/${block.last_version}`} target="_blank" underline="none">
-        {block.last_version}
-      </Link>
+    <GeneralTableCell sx={{textAlign: "left"}}>
+      {`${Number(block.baseFee).toFixed(0)} Gwei`}
     </GeneralTableCell>
   );
 }
@@ -76,8 +72,8 @@ const BlockCells = Object.freeze({
   height: BlockHeightCell,
   age: BlockAgeCell,
   hash: BlockHashCell,
-  firstVersion: FirstVersionCell,
-  lastVersion: LastVersionCell,
+  txns: TxnCell,
+  baseFee: BaseFeeCell,
 });
 
 type Column = keyof typeof BlockCells;
@@ -86,8 +82,8 @@ const DEFAULT_COLUMNS: Column[] = [
   "height",
   "age",
   "hash",
-  "firstVersion",
-  "lastVersion",
+  "txns",
+  "baseFee",
 ];
 
 type BlockRowProps = {
@@ -125,10 +121,10 @@ function BlockHeaderCell({column}: BlockHeaderCellProps) {
       return <GeneralTableHeaderCell header="Age" />;
     case "hash":
       return <GeneralTableHeaderCell header="Hash" />;
-    case "firstVersion":
-      return <GeneralTableHeaderCell header="First Version" textAlignRight />;
-    case "lastVersion":
-      return <GeneralTableHeaderCell header="Last Version" textAlignRight />;
+    case "txns":
+      return <GeneralTableHeaderCell header="Txns" />;
+    case "baseFee":
+      return <GeneralTableHeaderCell header="Base Fee" />;
     default:
       return assertNever(column);
   }

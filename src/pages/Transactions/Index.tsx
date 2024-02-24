@@ -15,13 +15,13 @@ export default function TransactionsPage() {
           User Transactions
         </Typography>
       </Stack>
-      <Grid item xs={12} md={12} lg={12}>
+      {/* <Grid item xs={12} md={12} lg={12}>
         <Stack direction="column">
           <Typography variant="body2" alignSelf="flex-end">
             {`LASTS: 50`}
           </Typography>
         </Stack>
-      </Grid>
+      </Grid> */}
       <UserTransactions />
     </Box>
   );

@@ -17,7 +17,7 @@ export default function LatestBlocksPreview() {
   const lastBlocks = useQuery({
     queryKey: ["api_getLatestBlocks"],
     queryFn: async () => {
-      const queryResult = await api_getLatestBlocks(selectedNetwork);
+      const queryResult = await api_getLatestBlocks(selectedNetwork, 1, 6);
       return queryResult.result
         .map((x: any) => {
           let block = buildBlockFromQueryResult(x, true);
@@ -43,7 +43,7 @@ export default function LatestBlocksPreview() {
           { lastBlocks.data && <LatestBlocksTable blocks={lastBlocks.data} /> }
         </Box>
         <Link
-          to="/"
+          to="/blocks"
           sx={{
             display: "flex",
             alignItems: "center",
@@ -70,7 +70,7 @@ export default function LatestBlocksPreview() {
             },
           }}
         >
-          View All Blocks (Comming Soon!)
+          View All Blocks
           <ChevronRight />
         </Link>
       </Stack>

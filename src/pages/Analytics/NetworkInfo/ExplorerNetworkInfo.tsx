@@ -37,6 +37,8 @@ function LinkableContainer({
 
 export default function ExplorerNetworkInfo() {
   const [selectedNetwork] = useNetworkSelector();
+  const [blockSizes, setBlockSizes] = React.useState<number[]>([]);
+
   const analyticsQuery = useQuery({
     queryKey: ["api_getAnalytics"],
     queryFn: async () => {
@@ -49,7 +51,7 @@ export default function ExplorerNetworkInfo() {
   const lastBlocks = useQuery({
     queryKey: ["api_getLatestBlocks"],
     queryFn: async () => {
-      const queryResult = await api_getLatestBlocks(selectedNetwork);
+      const queryResult = await api_getLatestBlocks(selectedNetwork, 1, 6);
       return queryResult.result.map((x: any) => {
         const block = buildBlockFromQueryResult(x, true);
 
@@ -72,27 +74,8 @@ export default function ExplorerNetworkInfo() {
     refetchInterval: 10000,
   });
 
-  // const allAnalyticsQuery = useQuery({
-  //   queryKey: ["get_Analytics"],
-  //   queryFn: async () => {
-  //     const result = await api_getAnalytics(selectedNetwork);
-
-  //     if (Object.keys(result).length === 0) {
-  //       return undefined;
-  //     }
-  //     return result.result;
-  //   },
-  // });
-
   const defaultData: any = {
-    daily_user_transactions: [
-      ...[...Array(30).keys()].reverse().map((x) => {
-        return {
-          num_user_transactions: 0,
-          date: moment().subtract(x, "days").format("YYYY-MM-DD"),
-        };
-      }),
-    ],
+    daily_user_transactions: analyticsQuery.data?.daily_user_transactions ?? [],
   };
 
   return (

@@ -10,12 +10,12 @@ export const api_getLatestTransactions = async (selectedNetwork: NetworkKey, pag
     );
   }
 
-export const api_getLatestBlocks = async (selectedNetwork: NetworkKey) => {
+export const api_getLatestBlocks = async (selectedNetwork: NetworkKey, page: number, size: number) => {
     return request<any>(
         `${networksURLS[selectedNetwork]}`,
         "api_getLatestBlocks",
         "POST",
-        {"jsonrpc":"2.0","method":"api_getLatestBlocks","params": [],"id":1}
+        {"jsonrpc":"2.0","method":"api_getLatestBlocks","params": [page, size],"id":1}
     );
   }
 

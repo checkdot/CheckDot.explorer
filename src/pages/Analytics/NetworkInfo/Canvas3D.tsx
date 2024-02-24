@@ -3,6 +3,7 @@ import {css} from "@emotion/react";
 import {useTheme} from "@mui/material";
 import React, {Suspense, useEffect, useRef} from "react";
 import {CardWithStyle} from "../../../components/Card";
+import { useQuery } from "@tanstack/react-query";
 
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
@@ -32,6 +33,14 @@ const Canvas3D = ({cube1, cube2, cube3}: Canvas3DProps) => {
   const LiquidCube2 = useRef<any>();
   const LiquidCube3 = useRef<any>();
   const Backdrop = useRef<any>();
+
+  const intervalcubesDisplay = useQuery({
+    queryKey: ['intervalcubesDisplay'],
+    queryFn: () => {
+      return [cube1, cube2, cube3];
+    },
+    refetchInterval: 1000
+  });
 
   if (theme.palette.mode === "light") {
     StyleCard = css`
@@ -81,9 +90,9 @@ const Canvas3D = ({cube1, cube2, cube3}: Canvas3DProps) => {
     LiquidCube3.current = initMesh("LiquidCube3");
     Backdrop.current = initMesh("Backdrop");
 
-    updateCube(LiquidCube1.current, cube1);
-    updateCube(LiquidCube2.current, cube2);
-    updateCube(LiquidCube3.current, cube3);
+    updateCube(LiquidCube1.current, intervalcubesDisplay?.data ? intervalcubesDisplay?.data[0] : 0);
+    updateCube(LiquidCube2.current, intervalcubesDisplay?.data ? intervalcubesDisplay?.data[1] : 0);
+    updateCube(LiquidCube3.current, intervalcubesDisplay?.data ? intervalcubesDisplay?.data[2] : 0);
 
     updateBackdropTheme();
   }

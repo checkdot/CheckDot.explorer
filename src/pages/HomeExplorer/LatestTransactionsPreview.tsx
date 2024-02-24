@@ -35,7 +35,7 @@ export default function LatestTransactionsPreview() {
           )}
         </Box>
         <Link
-          to="/"
+          to="/transactions"
           sx={{
             display: "flex",
             alignItems: "center",
@@ -62,7 +62,7 @@ export default function LatestTransactionsPreview() {
             },
           }}
         >
-          View All Transactions (Comming Soon!)
+          View All Transactions
           <ChevronRight />
         </Link>
       </Stack>
