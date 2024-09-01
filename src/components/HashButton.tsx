@@ -23,17 +23,22 @@ import {assertNever} from "../utils";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import IdenticonImg from "./IdenticonImg";
 import {Link} from "../routing";
+import NodeIdenticonImg from "./NodeIdenticonImg";
 
 export enum HashType {
   ACCOUNT = "account",
   TRANSACTION = "transaction",
   OTHERS = "others",
   BLOCK = "block",
+  LINK = "link",
+  NODE = 'node'
 }
 
 function getHashLinkStr(hash: string, type: HashType): string {
   switch (type) {
     case HashType.ACCOUNT:
+      return `/account/${hash}`;
+    case HashType.NODE:
       return `/account/${hash}`;
     case HashType.TRANSACTION:
       return `/tx/${hash}`;
@@ -41,6 +46,8 @@ function getHashLinkStr(hash: string, type: HashType): string {
       return ``;
     case HashType.OTHERS:
       return "";
+    case HashType.LINK:
+      return hash;
     default:
       return assertNever(type);
   }
@@ -50,6 +57,7 @@ function HashLink(hash: string, type: HashType): JSX.Element {
   switch (type) {
     case HashType.ACCOUNT:
     case HashType.TRANSACTION:
+    case HashType.NODE:
       return (
         <Link to={getHashLinkStr(hash, type)} color="inherit">
           {hash}
@@ -58,6 +66,12 @@ function HashLink(hash: string, type: HashType): JSX.Element {
     case HashType.OTHERS:
     case HashType.BLOCK:
       return <>{hash}</>;
+    case HashType.LINK:
+      return (
+        <Link target="_blank" to={getHashLinkStr(hash, type)} color="inherit">
+          {hash}
+        </Link>
+      );
     default:
       return assertNever(type);
   }
@@ -92,6 +106,17 @@ export default function HashButton({
   } else if (type === HashType.ACCOUNT) {
     return (
       <AccountHashButtonInner
+        hash={hash}
+        type={type}
+        size={size}
+        isValidator={isValidator}
+        hideImage={hideImage}
+        {...props}
+      />
+    );
+  } else if (type === HashType.NODE) {
+    return (
+      <NodeHashButtonInner
         hash={hash}
         type={type}
         size={size}
@@ -136,6 +161,78 @@ function AccountHashButtonInner({
   return (
     <Stack direction="row" alignItems={"center"} spacing={1}>
       {!hideImage && <IdenticonImg address={hash} />}
+      <Link
+        to={getHashLinkStr(hash, type)}
+        sx={{
+          backgroundColor: codeBlockColor,
+          "&:hover": {
+            backgroundColor: codeBlockColorClickableOnHover,
+          },
+          color:
+            theme.palette.mode === "dark" ? primary["500"] : primary["700"],
+          padding: "0.15rem 0.35rem 0.15rem 1rem",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          borderRadius: 50,
+          textDecoration: "none",
+        }}
+      >
+        <Tooltip title={hash} enterDelay={500} enterNextDelay={500}>
+          <span>{truncateHash}</span>
+        </Tooltip>
+        <Tooltip title="Copied" open={copyTooltipOpen}>
+          <Button
+            sx={{
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: `${
+                  theme.palette.mode === "dark" ? primary[700] : primary[100]
+                }`,
+                color: `${
+                  theme.palette.mode === "dark" ? primary[100] : primary[600]
+                }`,
+              },
+              padding: "0.25rem 0.5rem 0.25rem 0.5rem",
+              margin: "0 0 0 0.2rem",
+              minWidth: "unset", // remove minimum width
+              borderRadius: 50,
+            }}
+            onClick={copyAddress}
+            endIcon={
+              <ContentCopyIcon sx={{opacity: "0.75", mr: 1}} fontSize="small" />
+            }
+            size="small"
+          />
+        </Tooltip>
+      </Link>
+    </Stack>
+  );
+}
+
+function NodeHashButtonInner({
+  hash,
+  type,
+  size = "small",
+  hideImage = false,
+  isValidator,
+}: AccountHashButtonInnerProps) {
+  const truncateHash =
+    size === "large" ? truncateAddressMiddle(hash) : truncateAddress(hash);
+  const [copyTooltipOpen, setCopyTooltipOpen] = useState(false);
+  const theme = useTheme();
+  const copyAddress = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    await navigator.clipboard.writeText(hash);
+    setCopyTooltipOpen(true);
+    setTimeout(() => {
+      setCopyTooltipOpen(false);
+    }, 2000);
+  };
+
+  return (
+    <Stack direction="row" alignItems={"center"} spacing={1}>
+      {!hideImage && <NodeIdenticonImg address={hash} />}
       <Link
         to={getHashLinkStr(hash, type)}
         sx={{

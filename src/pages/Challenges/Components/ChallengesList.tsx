@@ -46,13 +46,13 @@ export function ChallengeRow({data}: any) {
           />
         </Box>
       </Box>
-      {data.available === undefined && data.validated !== true && data.progress !== undefined && (<Chip
+      {data.available === undefined && (data.validated !== true || data.infinite) && data.progress !== undefined && (<Chip
             label={data.progress}
             size="small"
             color={"success"}
             sx={{fontSize: "0.75rem", marginTop: "0.5rem"}}
           />)}
-      {data.validated && <DoneAll color="success" />}
+      {data.validated && !data.infinite && <DoneAll color="success" />}
       {data.available === false && <TimeIcon color="warning" />}
     </Box>
   );

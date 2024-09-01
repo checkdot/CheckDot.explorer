@@ -136,7 +136,11 @@ function ValidatorHeaderCell({column}: ValidatorHeaderCellProps) {
 }
 
 export function ValidatorsTable() {
-  const activeValidators: any[] = [];
+  const activeValidators: any[] = [{
+    addr: '0xfffffffff',
+    voting_power: 1,
+    networkAddr: 'https://localhost'
+  }];
 
   const validatorsInOrder = activeValidators.sort(
     (validator1, validator2) =>

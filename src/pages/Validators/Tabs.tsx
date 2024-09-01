@@ -33,13 +33,15 @@ function getTabLabel(value: VALIDATORS_TAB_VALUE): string {
 type TabPanelProps = {
   value: VALIDATORS_TAB_VALUE;
   networkName: NetworkName;
+  nodes: any[]
 };
 
-function TabPanel({value, networkName}: TabPanelProps): JSX.Element {
+function TabPanel({value, networkName, nodes}: TabPanelProps): JSX.Element {
   switch (networkName) {
     case Network.MAINNET:
     case Network.TESTNET:
-      return <ValidatorsTable />;
+    case Network.LOCAL:
+      return <ValidatorsTable value={value} nodes={nodes}/>;
     case Network.DEVNET:
       return <OldValidatorsTable />;
     default:
@@ -47,7 +49,7 @@ function TabPanel({value, networkName}: TabPanelProps): JSX.Element {
   }
 }
 
-export default function ValidatorsPageTabs(): JSX.Element {
+export default function ValidatorsPageTabs({ nodes }: any): JSX.Element {
   const [state] = useGlobalState();
   const {tab} = useParams();
   const navigate = useNavigate();
@@ -93,6 +95,20 @@ export default function ValidatorsPageTabs(): JSX.Element {
               />
             ) : (
               <StyledTab
+                icon={
+                  <Typography
+                    sx={{
+                      backgroundColor: "#8B5CF6",
+                      color: "#ffffff",
+                      borderRadius: 1,
+                      paddingX: 1,
+                      minWidth: "3.5rem",
+                      height: "1.5rem",
+                    }}
+                  >
+                    BETA
+                  </Typography>
+                }
                 key={i}
                 value={value}
                 label={getTabLabel(value)}
@@ -104,7 +120,7 @@ export default function ValidatorsPageTabs(): JSX.Element {
         </StyledTabs>
       </Box>
       <Box sx={{width: "auto", overflowX: "auto"}}>
-        <TabPanel value={value} networkName={state.network_name} />
+        <TabPanel value={value} nodes={nodes} networkName={state.network_name} />
       </Box>
     </Box>
   );
